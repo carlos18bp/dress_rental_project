@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <h1>Crear Cliente</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Guardar">
+    </form>
+    </br>
+    <a href="{% url 'customer_list' %}">Regresar a lista de Clientes</a>
+{% endblock content %}

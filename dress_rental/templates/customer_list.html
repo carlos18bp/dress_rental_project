@@ -1,0 +1,11 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+   <h1>Lista de Clientes</h1>
+    <ul>
+        {% for customer in customers %}
+            <li>{{ customer.first_name }} <a href="{% url 'sale_list_by_customer' customer.id %}">Ver ventas</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_customer' %}">Crear Cliente</a>
+{% endblock content %}

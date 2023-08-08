@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <h1>Crear Venta o Alquiler</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Guardar">
+    </form>
+    </br>
+    <a href="{% url 'sale_list' %}">Regresar a lista de Ventas o Alquileres</a>
+{% endblock content %}
