@@ -21,10 +21,13 @@ from dress_rental.views import customer, sale, product
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create_customer/', customer.create, name='create_customer'),
-    path('customer_list/', customer.index, name='customer_list'),
+    path('delete_customer/<int:customer_id>/', customer.delete, name='delete_customer'),
+    path('customers_list/', customer.index, name='customer_list'),
     path('create_product/', product.create, name='create_product'),
-    path('product_list/', product.index, name='product_list'),
+    path('delete_product/<int:product_id>/', product.delete, name='delete_product'),
+    path('products_list/', product.index, name='product_list'),
     path('create_sale/', sale.create, name='create_sale'),
-    path('sale_list/', sale.index, name='sale_list'),
+    path('delete_sale/<int:sale_id>/', sale.delete, name='delete_sale'),
+    path('sales_list/', sale.index, name='sale_list'),
     path('sale_list_by_customer/<int:customer_id>/', sale.sale_list_by_customer, name='sale_list_by_customer'),    
 ]

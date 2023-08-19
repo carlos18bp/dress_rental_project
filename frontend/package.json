@@ -8,10 +8,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
-    "pinia": "^2.1.4",
+    "pinia": "^2.1.6",
+    "popper.js": "^1.16.1",
     "sweetalert2": "^11.7.23",
     "vue": "^3.3.4",
+    "vue-cookies": "^1.8.3",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {

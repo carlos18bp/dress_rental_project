@@ -25,30 +25,32 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link fs-3"
-                ><RouterLink to="/" class="custom-link">Home</RouterLink></a
-              >
+              <a class="nav-link fs-3">
+                <RouterLink :to="{ name: 'home' }" class="custom-link">
+                  Home
+                </RouterLink>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-3"
-                ><RouterLink to="/List_Customers" class="custom-link"
-                  >Clientes</RouterLink
-                ></a
-              >
+              <a class="nav-link fs-3">
+                <RouterLink :to="{ name: 'list_customers' }" class="custom-link">
+                  Clientes
+                </RouterLink>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-3"
-                ><RouterLink to="/List_Sales" class="custom-link"
-                  >Ventas</RouterLink
-                ></a
-              >
+              <a class="nav-link fs-3">
+                <RouterLink :to="{ name: 'list_products' }" class="custom-link">
+                  Productos
+                </RouterLink>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-3"
-                ><RouterLink to="/List_Products" class="custom-link"
-                  >Productos</RouterLink
-                ></a
-              >
+              <a class="nav-link fs-3">
+                <RouterLink :to="{ name: 'list_sales' }" class="custom-link">
+                  Ventas
+                </RouterLink>
+              </a>
             </li>
           </ul>
         </div>
@@ -56,15 +58,17 @@
     </nav>
   </div>
 </template>
+
 <script setup>
-import { RouterLink } from "vue-router";
+  import { RouterLink } from "vue-router";
 </script>
+
 <style scoped>
-.custom-link {
-  text-decoration: none; /* Quita el subrayado */
-  color: inherit; /* Utiliza el color por defecto del texto */
-}
-.custom-link:hover {
-  color: #0b5ed7;
-}
+  .custom-link {
+    text-decoration: none; /* Quita el subrayado */
+    color: inherit; /* Utiliza el color por defecto del texto */
+  }
+  .custom-link:hover {
+    color: #0b5ed7;
+  }
 </style>

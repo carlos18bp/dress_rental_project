@@ -1,12 +1,9 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-import NavbarComponent from "./components/NavbarComponent.vue";
-</script>
-
-<template>
-  <NavbarComponent></NavbarComponent>
-
+<template>  
+  <Header></Header>  
   <RouterView />
 </template>
 
-<style scoped></style>
+<script setup>  
+  import Header from "./views/layouts/header.vue";
+  import { RouterView } from "vue-router";
+</script>
