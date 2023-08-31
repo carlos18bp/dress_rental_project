@@ -1,59 +1,58 @@
-import { defineStore } from 'pinia';
-import { get_request, post_request } from './services/request_http';
+import { defineStore } from "pinia";
+import {
+  create_request,
+  edit_request,
+  get_request,
+  delete_request,
+} from "./services/request_http";
 
-export const useDressRentalStore = defineStore('dress_rental', {
+export const useDressRentalStore = defineStore("dress_rental", {
   state: () => ({
+    categories: [],
     customers: [],
-    customersFetched: false,
     products: [],
-    productsFetched: false,
     sales: [],
-    salesFetched: false
   }),
   actions: {
-    async fetchCustomersData() {
-      const jsonData = await get_request('api/customers_list/');
-      
-      this.customers = JSON.parse(jsonData).map(item => {
-        return {
-          id: item.pk,
-          identification: item.fields.identification,
-          first_name: item.fields.first_name,
-          last_name: item.fields.last_name,
-          email: item.fields.email,
-          phone_number: item.fields.phone_number
-        };        
-      });
-      this.customersFetched = true
+    async createRequest(endPoint, formData) {
+      await create_request(`/api/${endPoint}`, JSON.stringify(formData));
     },
-    async fetchProductsData() {
-        const jsonData = await get_request('api/products_list/');
-      
-        this.products = JSON.parse(jsonData).map(item => {
+    async editRequest(endPoint, formData) {
+      await edit_request(`/api/${endPoint}`, JSON.stringify(formData));
+    },
+    async fetchCategoriesData() {
+      const jsonData = await get_request("api/list_categories/");
+      if (jsonData) {
+        this.categories = JSON.parse(jsonData).map((item) => {
           return {
             id: item.pk,
-            title: item.fields.title,
-            reference: item.fields.reference,
-            category: item.fields.category
+            type: item.fields.type,
           };
         });
-        this.productsFetched = true
+      }
+    },
+    async fetchCustomersData() {
+      const jsonData = await get_request("api/list_customers/");
+      this.customers = jsonData ? JSON.parse(jsonData) : [];
+    },
+    async fetchProductsData() {
+      const jsonData = await get_request("api/list_products/");
+      this.products = jsonData ? JSON.parse(jsonData) : [];
     },
     async fetchSalesData() {
-        const jsonData  = await get_request('api/sales_list/');  
-        this.sales = JSON.parse(jsonData);
-        this.salesFetched = true
+      const jsonData = await get_request("api/list_sales/");
+      this.sales = jsonData ? JSON.parse(jsonData) : [];
     },
     async deleteCustomer(customerId) {
-        await post_request(`api/delete_customer/${customerId}/`);
-        this.fetchCustomersData();
+      await delete_request(`api/delete_customer/${customerId}/`);
+      this.fetchCustomersData();
     },
     async deleteProduct(productId) {
-      await post_request(`api/delete_product/${productId}/`);
+      await delete_request(`api/delete_product/${productId}/`);
       this.fetchProductsData();
     },
     async deleteSale(saleId) {
-      await post_request(`api/delete_sale/${saleId}/`);
+      await delete_request(`api/delete_sale/${saleId}/`);
       this.fetchSalesData();
     },
   },

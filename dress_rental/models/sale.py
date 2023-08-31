@@ -1,6 +1,5 @@
 from django.db import models
-from .customer import Customer
-from .product import Product
+from dress_rental.models import Customer, Product
 
 class Sale(models.Model):
     OPTIONS = (
@@ -14,12 +13,15 @@ class Sale(models.Model):
     advance_payment = models.IntegerField()
     advance_payment_date = models.DateField()
 
+    delivery_date = models.DateField()
     is_product_delivered = models.BooleanField(default=False)
 
-    delivery_date = models.DateField()
+    
     return_date = models.DateField(blank=True, null=True)
+    is_product_return = models.BooleanField(default=False)
 
-    is_return = models.BooleanField(default=True)
+    products = models.ManyToManyField(Product, related_name='sales')
+    customer = models.ForeignKey(Customer, related_name='sales', on_delete=models.PROTECT)
 
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.type

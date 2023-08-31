@@ -1,23 +1,60 @@
-import axios from 'axios';
+import axios from "axios";
 axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
-export async function get_request(url) {
-    try {
-        const response = await axios.get(url);
-        console.log(response.data);       
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
+function getActionEndPoint(url) {
+  const inicio = "/api/";
+  const fin = "/";
+  const startIndex = url.indexOf(inicio) + inicio.length;
+  const endIndex = url.indexOf(fin, startIndex);
+
+  return url.substring(startIndex, endIndex);
 }
 
-export async function post_request(url) {    
-    try {        
-        const response = await axios.post(url);
-        console.log(response.data);
-    } catch (error) {
-        console.error(error);
+async function makeRequest(method, url, params = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  try {
+    let response;
+
+    switch (method) {
+      case "GET":
+        response = await axios.get(url);
+        break;
+      case "POST":
+        response = await axios.post(url, params, { headers });
+        break;
+      case "PUT":
+        response = await axios.put(url, params, { headers });
+        break;
+      case "DELETE":
+        response = await axios.delete(url);
+        break;
+      default:
+        throw new Error(`Unsupported method: ${method}`);
     }
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function create_request(url, params) {
+  return await makeRequest("POST", url, params);
+}
+
+export async function edit_request(url, params) {
+  return await makeRequest("PUT", url, params);
+}
+
+export async function get_request(url) {
+  return await makeRequest("GET", url);
+}
+
+export async function delete_request(url) {
+  return await makeRequest("DELETE", url);
 }

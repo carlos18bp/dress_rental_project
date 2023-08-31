@@ -1,10 +1,10 @@
 from django.db import models
-from .category import Category
+from dress_rental.models import Category
 
 class Product(models.Model):
     title = models.CharField(max_length=40)
     reference = models.CharField(max_length=40)
-    category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
     measures = models.JSONField(blank=True, null=True)
 
     def __str__(self):

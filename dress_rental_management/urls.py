@@ -15,19 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dress_rental.views import customer, sale, product
-
+from dress_rental.views import category, customer, product, sale
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create_customer/', customer.create, name='create_customer'),
+    path('edit_customer/', customer.edit, name='edit_customer'),
     path('delete_customer/<int:customer_id>/', customer.delete, name='delete_customer'),
-    path('customers_list/', customer.index, name='customer_list'),
+    path('list_customers/', customer.index, name='list_customers'),
     path('create_product/', product.create, name='create_product'),
+    path('edit_product/', product.edit, name='edit_product'),
     path('delete_product/<int:product_id>/', product.delete, name='delete_product'),
-    path('products_list/', product.index, name='product_list'),
+    path('list_products/', product.index, name='list_products'),
     path('create_sale/', sale.create, name='create_sale'),
+    path('edit_sale/', sale.edit, name='edit_sale'),
     path('delete_sale/<int:sale_id>/', sale.delete, name='delete_sale'),
-    path('sales_list/', sale.index, name='sale_list'),
-    path('sale_list_by_customer/<int:customer_id>/', sale.sale_list_by_customer, name='sale_list_by_customer'),    
+    path('list_sales/', sale.index, name='list_sales'),
+    path('list_sales_by_customer/<int:customer_id>/', sale.list_sales_by_customer, name='list_sales_by_customer'),
+    path('list_categories/', category.index, name='list_categories'),  
 ]

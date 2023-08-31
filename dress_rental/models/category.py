@@ -12,3 +12,6 @@ class Category(models.Model):
         ('accessories', 'Accesorios')
     )
     type = models.CharField(max_length=30, choices=OPTION_TYPE)
+
+def __str__(self):
+    return self.type

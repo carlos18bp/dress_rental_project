@@ -1,0 +1,88 @@
+<template>
+  <div class="container mt-5">
+    <h1>{{ defineAction }}</h1>
+    <form @submit.prevent="onSubmit">
+      <div v-if="productformData" class="mt-3">
+        <div class="mb-3">
+          <label for="title" class="form-label">Titulo:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            placeholder="Titulo del producto"
+            v-model="productformData.title"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="reference" class="form-label">Referencia:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="reference"
+            placeholder="Referencia"
+            v-model="productformData.reference"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Categoria:</label>
+          <select
+            class="form-select"
+            v-model="productformData.categoryId"
+            required>
+            <option disabled>Seleccionar una opción</option>
+            <option
+              v-for="category in dressRentalStore.categories"
+              :key="category.id"
+              :value="category.id">
+              {{ category.type }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <button type="submit" class="btn btn-primary mx-3">Guardar</button>
+        <RouterLink :to="{ name: 'list_products' }" class="btn btn-danger">
+          Cancelar
+        </RouterLink>
+      </div>
+    </form>
+  </div>
+</template>
+  
+<script setup>
+  import { useRouter } from "vue-router";
+  import { submitHandler } from "@/shared/submitHandler";
+  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { computed } from "vue";
+
+  const props = defineProps({
+    action: String,
+    productformData: Object,
+    endPoint: String,
+  });
+
+  const router = useRouter();
+  const dressRentalStore = useDressRentalStore();
+
+  const defineAction = computed(() => {
+    if (props.action == "create") return "Crear Nuevo Producto:";
+    return "Editar Producto:";
+  });
+
+  const onSubmit = () => {
+    let text_response =
+      props.endPoint == "create_product/"
+        ? "Se ha creado tu nuevo producto"
+        : "Se ha editado el producto";
+    submitHandler(
+      props.action,
+      props.endPoint,
+      props.productformData,
+      text_response,
+      router,
+      "/list_products"
+    );
+  };
+</script>

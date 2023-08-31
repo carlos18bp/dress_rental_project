@@ -65,8 +65,8 @@
 
 <style scoped>
   .custom-link {
-    text-decoration: none; /* Quita el subrayado */
-    color: inherit; /* Utiliza el color por defecto del texto */
+    text-decoration: none;
+    color: inherit;
   }
   .custom-link:hover {
     color: #0b5ed7;
