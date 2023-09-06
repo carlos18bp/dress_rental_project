@@ -2,7 +2,7 @@
   <CustomerForm
     :customerformData="editFormData.customer"
     action="edit"
-    endPoint="edit_customer/"
+    model="customer"
   >
   </CustomerForm>
 </template>

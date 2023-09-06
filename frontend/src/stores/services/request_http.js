@@ -3,15 +3,6 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
-function getActionEndPoint(url) {
-  const inicio = "/api/";
-  const fin = "/";
-  const startIndex = url.indexOf(inicio) + inicio.length;
-  const endIndex = url.indexOf(fin, startIndex);
-
-  return url.substring(startIndex, endIndex);
-}
-
 async function makeRequest(method, url, params = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -57,4 +48,8 @@ export async function get_request(url) {
 
 export async function delete_request(url) {
   return await makeRequest("DELETE", url);
+}
+
+export async function update_request(url) {
+  return await makeRequest("PUT", url);
 }

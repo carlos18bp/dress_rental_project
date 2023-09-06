@@ -1,9 +1,9 @@
-import { useDressRentalStore } from '@/stores/dress_rental';
 import Swal from 'sweetalert2';
-
-const dressRentalStore = useDressRentalStore();
+import { useDressRentalStore } from '@/stores/dress_rental';
 
 export function deleteHandler(id, model) {
+  const store = useDressRentalStore();
+
   Swal.fire({
     title: "¿Estas Seguro?",
     text: "No podras revertir esta acción.",
@@ -16,17 +16,16 @@ export function deleteHandler(id, model) {
   }).then((result) => {
     if (result.isConfirmed) {
       let text_message;
+      store.delete(id, model);
+
       switch (model) {
           case 'customer':
-              dressRentalStore.deleteCustomer(id);
               text_message = "Tu cliente ha sido eliminado."
               break;
           case 'product':
-              dressRentalStore.deleteProduct(id);
               text_message = "Tu producto ha sido eliminado."
               break;
           case 'sale':
-              dressRentalStore.deleteSale(id);
               text_message = "Tu venta ha sido eliminado."
               break;
           default:

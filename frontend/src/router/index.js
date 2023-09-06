@@ -24,6 +24,11 @@ const router = createRouter({
       component: () => import('@/views/customer/List.vue')
     },
     {
+      path: '/detail_customer/:customer',
+      name: 'detail_customer',
+      component: () => import('@/views/customer/Detail.vue')
+    },
+    {
       path: '/create_sale/:customer_id?',
       name: 'create_sale',
       component: () => import('@/views/sale/Create.vue')

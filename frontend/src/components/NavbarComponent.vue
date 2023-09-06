@@ -4,8 +4,12 @@
       <div class="container-fluid">
         <a class="navbar-brand">
           <img
-            src="../assets/Logo/Logo_Paginas_Web.jpg"
+            src="../assets/Logo/logo.png"
             style="height: 150px"
+          />
+          <img
+            src="../assets/Logo/only_text.png"
+            style="height: 100px"
           />
         </a>
         <button

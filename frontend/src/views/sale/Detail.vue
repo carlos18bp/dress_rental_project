@@ -32,14 +32,10 @@
         <p>{{ detailSale.sale.returnDate }}</p>
       </div>
       <div class="col-6">
-        <h2>El producto esta en el Amacén:</h2>
-        <p v-if="checkDeliverySaleProduct">Producto vendido y entregado</p>
+        <h2>El Producto fue Devuelto al Almacen:</h2>
+        <p v-if="checkDeliverySaleProduct">No, Producto vendido y entregado</p>
         <p v-else-if="checkReturnRentalProduct">Si</p>
         <p v-else>No</p>        
-      </div>
-      <div class="col-6">
-        <h2>Referencia del Producto</h2>
-        <p>{{ detailSale.sale.product.reference }}</p>
       </div>
       <div class="col-6">
         <h2>Cédula del Cliente:</h2>
@@ -61,6 +57,13 @@
         <p>{{ detailSale.sale.customer.email }}</p>
       </div>
     </div>
+    <div v-if="detailSale.sale && detailSale.sale.products.length">
+      <h2>Lista de productos:</h2>
+      <ProductTable
+        :products="detailSale.sale.products"
+      >
+      </ProductTable> 
+    </div>
     <div class="d-flex justify-content-center align-items-center">
       <button @click="goBack" class="btn btn-primary mx-3">Regresar</button>
     </div>
@@ -68,8 +71,9 @@
 </template>
 
 <script setup>
-  import { onMounted, reactive } from "vue";
+  import { computed, onMounted, reactive } from "vue";
   import { useRoute } from "vue-router";
+  import ProductTable from '@/components/ProductTable.vue';
 
   const route = useRoute();
   const detailSale = reactive({});
@@ -80,15 +84,19 @@
     detailSale.sale = decodedData;
   });
 
-  function checkReturnRentalProduct() {
+  /**
+   * 
+   */
+  const checkReturnRentalProduct = computed(() => {
     return detailSale.sale.type === 'Alquiler' && detailSale.sale.isProductReturn
-  }
+  });
 
-  function checkDeliverySaleProduct() {
+  /**
+   * 
+   */
+  const checkDeliverySaleProduct = computed(() => {
     return detailSale.sale.type === 'Venta' && detailSale.sale.isProductDelivered
-  }
+  });
 
-  const goBack = () => {
-    window.history.back();
-  };
+  const goBack = () => window.history.back();
 </script>

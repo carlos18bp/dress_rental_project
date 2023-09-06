@@ -2,7 +2,7 @@
   <ProductForm
     :productformData="editFormData.product"
     action="edit"
-    endPoint="edit_product/"
+    model="product"
   >
   </ProductForm>
 </template>

@@ -2,13 +2,13 @@
   <SaleForm
     :saleformData="editFormData"
     action="edit"
-    endPoint="edit_sale/"
+    model="sale"
   >
   </SaleForm>
 </template>
 
 <script setup>
-  import { onMounted, reactive, ref } from "vue";
+  import { onMounted, reactive} from "vue";
   import { useRoute } from "vue-router";
   import SaleForm from "@/components/SaleForm.vue";
 
@@ -19,6 +19,6 @@
     const encodedSale = route.params.sale;
     const decodedSale = await JSON.parse(decodeURIComponent(encodedSale));
     editFormData.sale = decodedSale;
-    editFormData.sale.customerId = decodedSale.customer.id;
+    editFormData.sale.customerId = decodedSale.customerId;
   });
 </script>

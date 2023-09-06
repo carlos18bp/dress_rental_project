@@ -19,7 +19,7 @@
                  @change="listAllSales"
                  :checked="isAllSalesChecked">
           <label class="form-check-label" for="allSales">
-            Listar Ventas y Alquileres
+            Listar Ventas/Alquileres
           </label>
         </div>
         <div class="col form-check">
@@ -74,7 +74,7 @@
                  @change="listExpiredSales"
                  :checked="isExpiredSalesChecked">
           <label class="form-check-label" for="expiredSales">
-            Alquileres vencidas
+            Alquileres vencidos
           </label>
         </div>
       </div>
@@ -90,6 +90,7 @@
             id="startDate"
             placeholder="Fecha de Inicio"
             v-model="startDate"
+            @change="filterByDate"
           />
         </div>
         <div class="col">
@@ -100,84 +101,48 @@
             id="endDate"
             placeholder="Fecha de Fin"
             v-model="endDate"
+            @change="filterByDate"
           />
         </div>
       </div>
     </div>
 
-    <table class="table table-striped table-hover mt-4 text-center">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Cédula Cliente</th>
-          <th scope="col">Referencia</th>
-          <th scope="col">Tipo</th>
-          <th scope="col">Fecha Despacho</th>
-          <th scope="col">Fecha Devolución</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <tr v-for="(sale, index) in sales" :key="sale.id">
-          <th scope="row">{{ index + 1 }}</th>
-          <td>{{ sale.customer.identification }}</td>
-          <td>
-            <select              
-              class="form-control" id="productId">
-              <option 
-                v-for="product in sale.products" :key="product.id"
-                value="product.id">
-                {{ product.reference }}
-              </option>
-            </select>
-          </td>
-          <td>{{ sale.type }}</td>
-          <td>{{ sale.deliveryDate }}</td>
-          <td>{{ sale.returnDate }}</td>
-          <td class="d-flex justify-content-around">
-            <router-link 
-              :to="{ name: 'detail_sale', 
-                     params: { sale: encodeURIComponent(JSON.stringify(sale)) } }" 
-              class="btn btn-primary">
-              Detalle
-            </router-link>
-            <router-link 
-              :to="{ name: 'edit_sale', 
-                     params: { sale: encodeURIComponent(JSON.stringify(sale)) } }" 
-              class="btn btn-primary">
-              Editar Venta
-            </router-link>
-            <button class="btn btn-danger" @click="deleteHandler(sale.id, 'sale')">
-              Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <SaleTable
+      :sales="sales"
+    >
+    </SaleTable>
   </div>
 </template>
 
 <script setup>
   import { RouterLink } from "vue-router";
   import { onMounted, ref, watchEffect } from 'vue';
+  import SaleTable from '@/components/SaleTable.vue'; 
   import { useDressRentalStore } from '@/stores/dress_rental';
-  import { deleteHandler } from '@/shared/deleteHandler'; 
 
-  const dressRentalStore = useDressRentalStore();
-  const customers = ref([]);
-  const products = ref([]);
+  const store = useDressRentalStore();
   const sales = ref([]);
+
   const isAllSalesChecked = ref(true);
   const isSalesByTypeSaleChecked = ref(false);
   const isSalesByTypeRentalChecked = ref(false);
   const isPendingDeliverySalesChecked = ref(false);
   const isPendingDeliveryRentalChecked = ref(false);
   const isExpiredSalesChecked = ref(false);
+
   const startDate = ref('');
   const endDate = ref('');
 
-  onMounted(async () => {
-    await fetchData();
+  onMounted(async () => await fetchSales());
+
+  watchEffect(async () => await store.fetchSalesData());
+
+  /**
+   * 
+   */
+   async function fetchSales() {
+    await store.fetchSalesData();
+    sales.value = store.sales;
 
     listAllSales();
     filterSalesByTypeSale();
@@ -185,128 +150,147 @@
     filterPendingDeliverySale();
     filterPendingDeliveryRental();
     filterExpiredDeliverySales();
-  });
+   }
 
-  async function fetchData() {
-    await dressRentalStore.fetchCustomersData();
-    customers.value = dressRentalStore.customers;
-
-    await dressRentalStore.fetchProductsData();
-    products.value = dressRentalStore.products;
-
-    await dressRentalStore.fetchSalesData();
-    sales.value = dressRentalStore.sales;
-  }
-
+  /**
+   * 
+   */
   function filterSalesByTypeSale() {
-    return sales.value.filter(item => item.type === 'Venta');    
+    return store.sales.filter(item => item.type === 'Venta');    
   }
 
+  /**
+   * 
+   */
   function filterSalesByTypeRental() {
-    return sales.value.filter(item => item.type === 'Alquiler');
+    return store.sales.filter(item => item.type === 'Alquiler');
   }
 
+  /**
+   * 
+   */
   function filterPendingDeliverySale() {
-    return sales.value.filter(item => item.type === 'Venta' && !item.isProductDelivered);
+    return store.sales.filter(item => item.type === 'Venta' && !item.isProductDelivered);
   }
 
+  /**
+   * 
+   */
   function filterPendingDeliveryRental() {
-    return sales.value.filter(item => item.type === 'Alquiler' && !item.isProductDelivered);
+    return store.sales.filter(item => item.type === 'Alquiler' && !item.isProductDelivered);
   }
 
+  /**
+   * 
+   */
   function filterExpiredDeliverySales() {
-    return sales.value.filter(item => item.type === 'Alquiler' &&
+    return store.sales.filter(item => item.type === 'Alquiler' &&
                                       item.isProductReturn === false && 
                                       new Date(item.returnDate) < new Date());
   }
 
-  watchEffect(() => {
-    sales.value = dressRentalStore.sales;
-    
+  /**
+   * 
+   */
+  function filterByDate() {
     if (isAllSalesChecked.value) listAllSales();
     if (isSalesByTypeSaleChecked.value) listSalesByTypeSale();
     if (isSalesByTypeRentalChecked.value) listSalesByTypeRental();
     if (isPendingDeliverySalesChecked.value) listPendingDeliverySales();
     if (isPendingDeliveryRentalChecked.value) listPendingDeliveryRental();
     if (isExpiredSalesChecked.value) listExpiredSales();
+  }
 
-    sales.value = filterByDateRange();
-  });
-
-  function filterByDateRange() {
+  /**
+   * 
+   */
+  function filterByDateRange(sales) {
     const startDateValid = isValidDate(startDate.value);
     const endDateValid = isValidDate(endDate.value);
 
     if (startDateValid && endDateValid) {
-      return sales.value.filter(item => new Date(item.deliveryDate) >= new Date(startDate.value) && 
-                                        new Date(item.returnDate) <= new Date(endDate.value));
+      return sales.filter(item => new Date(item.deliveryDate) >= new Date(startDate.value) && 
+                                  new Date(item.returnDate) <= new Date(endDate.value));
     } else if (startDateValid) {
-      return sales.value.filter(item => new Date(item.deliveryDate) >= new Date(startDate.value));
+      return sales.filter(item => new Date(item.deliveryDate) >= new Date(startDate.value));
     } else if (endDateValid) {
-      return sales.value.filter(item => new Date(item.returnDate) <= new Date(endDate.value));
+      return sales.filter(item => new Date(item.returnDate) <= new Date(endDate.value));
     } else {
-      return sales.value;
+      return sales;
     }
   }
 
+  /**
+   * 
+   * @param {*} dateValue 
+   */
   function isValidDate(dateValue) {
     return !isNaN(new Date(dateValue));
   }
 
+  /**
+   * 
+   */
   function listAllSales() {
-    sales.value = dressRentalStore.sales;
-    isAllSalesChecked.value = true;
-    isSalesByTypeSaleChecked.value = false;
-    isSalesByTypeRentalChecked.value = false;
-    isPendingDeliverySalesChecked.value = false;
-    isPendingDeliveryRentalChecked.value = false;
-    isExpiredSalesChecked.value = false;
+    sales.value = filterByDateRange(store.sales);
+    setSingleChecked(isAllSalesChecked);
   }
 
+  /**
+   * 
+   */
   function listSalesByTypeSale() {
-    sales.value = filterSalesByTypeSale();
-    isAllSalesChecked.value = false;
-    isSalesByTypeSaleChecked.value = true;
-    isSalesByTypeRentalChecked.value = false;
-    isPendingDeliverySalesChecked.value = false;
-    isPendingDeliveryRentalChecked.value = false;
-    isExpiredSalesChecked.value = false;
+    sales.value = filterByDateRange(filterSalesByTypeSale());    
+    setSingleChecked(isSalesByTypeSaleChecked);
   }
 
+  /**
+   * 
+   */
   function listSalesByTypeRental() {
-    sales.value = filterSalesByTypeRental();
-    isAllSalesChecked.value = false;
-    isSalesByTypeSaleChecked.value = false;
-    isSalesByTypeRentalChecked.value = true;
-    isPendingDeliverySalesChecked.value = false;
-    isPendingDeliveryRentalChecked.value = false;
-    isExpiredSalesChecked.value = false;
+    sales.value = filterByDateRange(filterSalesByTypeRental());    
+    setSingleChecked(isSalesByTypeRentalChecked);
   }
 
+  /**
+   * 
+   */
   function listPendingDeliverySales() {
-    sales.value = filterPendingDeliverySale();
-    isAllSalesChecked.value = false;
-    isPendingDeliverySalesChecked.value = true;
-    isPendingDeliveryRentalChecked.value = false;
-    isSalesByTypeRentalChecked.value = false;
-    isExpiredSalesChecked.value = false;
+    sales.value = filterByDateRange(filterPendingDeliverySale());   
+    setSingleChecked(isPendingDeliverySalesChecked);
   }
 
+  /**
+   * 
+   */
   function listPendingDeliveryRental() {
-    sales.value = filterPendingDeliveryRental();
-    isAllSalesChecked.value = false;
-    isPendingDeliverySalesChecked.value = false;
-    isPendingDeliveryRentalChecked.value = true;
-    isSalesByTypeRentalChecked.value = false;
-    isExpiredSalesChecked.value = false;
+    sales.value = filterByDateRange(filterPendingDeliveryRental());   
+    setSingleChecked(isPendingDeliveryRentalChecked);
   }
 
+  /**
+   * 
+   */
   function listExpiredSales() {
-    sales.value = filterExpiredDeliverySales();
-    isAllSalesChecked.value = false;
-    isPendingDeliverySalesChecked.value = false;
-    isPendingDeliveryRentalChecked.value = false;
-    isSalesByTypeRentalChecked.value = false;
-    isExpiredSalesChecked.value = true;
+    sales.value = filterByDateRange(filterExpiredDeliverySales());   
+    setSingleChecked(isExpiredSalesChecked);
+  }
+
+  /**
+   * 
+   */
+  function setSingleChecked(saleCheckedToSet) {
+    const salesChecked = [
+      isAllSalesChecked,
+      isSalesByTypeSaleChecked,
+      isSalesByTypeRentalChecked,
+      isPendingDeliverySalesChecked,
+      isPendingDeliveryRentalChecked,
+      isExpiredSalesChecked,
+    ];
+
+    for (const checked of salesChecked) {
+      checked.value = checked === saleCheckedToSet ? true : false;
+    }
   }
 </script>

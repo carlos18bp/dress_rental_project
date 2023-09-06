@@ -43,9 +43,7 @@
       </div>
       <div class="d-flex justify-content-center align-items-center">
         <button type="submit" class="btn btn-primary mx-3">Guardar</button>
-        <RouterLink :to="{ name: 'list_products' }" class="btn btn-danger">
-          Cancelar
-        </RouterLink>
+        <button @click="goBack" class="btn btn-danger mx-3">Cancelar</button>
       </div>
     </form>
   </div>
@@ -60,15 +58,14 @@
   const props = defineProps({
     action: String,
     productformData: Object,
-    endPoint: String,
+    model: String,
   });
 
   const router = useRouter();
   const dressRentalStore = useDressRentalStore();
 
   const defineAction = computed(() => {
-    if (props.action == "create") return "Crear Nuevo Producto:";
-    return "Editar Producto:";
+    return props.action == "create" ?"Crear Nuevo Producto:" : "Editar Producto:";
   });
 
   const onSubmit = () => {
@@ -78,11 +75,13 @@
         : "Se ha editado el producto";
     submitHandler(
       props.action,
-      props.endPoint,
       props.productformData,
-      text_response,
+      props.model,
+      text_response,      
       router,
       "/list_products"
     );
   };
+
+  const goBack = () => window.history.back();
 </script>

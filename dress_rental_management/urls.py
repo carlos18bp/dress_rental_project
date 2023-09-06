@@ -31,6 +31,6 @@ urlpatterns = [
     path('edit_sale/', sale.edit, name='edit_sale'),
     path('delete_sale/<int:sale_id>/', sale.delete, name='delete_sale'),
     path('list_sales/', sale.index, name='list_sales'),
-    path('list_sales_by_customer/<int:customer_id>/', sale.list_sales_by_customer, name='list_sales_by_customer'),
+    path('close_sale/<int:sale_id>/', sale.close_sale, name='close_sale'),
     path('list_categories/', category.index, name='list_categories'),  
 ]

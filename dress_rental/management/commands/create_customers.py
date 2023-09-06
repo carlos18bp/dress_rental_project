@@ -19,6 +19,8 @@ class Command(BaseCommand):
                 last_name = fake.last_name(),
                 email = fake.email(),
                 contact = fake.random_int(min=3000000000, max=3030000000),
+                second_contact = fake.random_int(min=3000000000, max=3030000000),
+                address = fake.street_address(),
             )
 
             self.stdout.write(self.style.SUCCESS(f'Customer "{new_customer}" created'))

@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Create product records in the database'
 
     def add_arguments(self, parser):
-        parser.add_argument('number_of_products', type=int, nargs='?', default=10)
+        parser.add_argument('number_of_products', type=int, nargs='?', default=30)
 
     def handle(self, *args, **options):
         number_of_products = options['number_of_products']

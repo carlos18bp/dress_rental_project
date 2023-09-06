@@ -1,5 +1,8 @@
 <template>
-  <CustomerForm :customerformData=customerformData action="create" endPoint="create_customer/">
+  <CustomerForm 
+    :customerformData=customerformData 
+    action="create" 
+    model="customer">
   </CustomerForm>
 </template>
 

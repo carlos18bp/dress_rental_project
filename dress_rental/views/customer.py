@@ -1,12 +1,13 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from dress_rental.models import Customer
+from dress_rental.serializers.customer_serializer import customers_serializer
 import json
 
 def index(request):
-    customers = Customer.objects.all().reverse()
+    customers = Customer.objects.all().order_by('-id')
     
-    return JsonResponse(_get_customers(customers), safe=False)
+    return JsonResponse(customers_serializer(customers), safe=False)
 
 def create(request):    
     if request.method == 'POST':
@@ -62,22 +63,3 @@ def delete(request, customer_id):
             return JsonResponse({'error': str(e)}, status=500) 
     
     return JsonResponse({'error': 'method not allowed'}, status=405)
-
-def _get_customers(customers):
-    customers_serialized = []
-
-    for customer in customers:
-        customer_data = {
-            'id': customer.id,
-            'identification': customer.identification,
-            'firstName': customer.first_name,
-            'lastName': customer.last_name,
-            'email': customer.email,
-            'contact': customer.contact,
-            'secondContact': customer.second_contact,
-            'adrress': customer.address,
-            'hasSale': True if customer.sales.all() else False,
-        }
-        customers_serialized.append(customer_data)
-
-    return json.dumps(customers_serialized)

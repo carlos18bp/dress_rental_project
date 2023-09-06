@@ -2,7 +2,7 @@
   <SaleForm 
     :saleformData=saleformData
     action="create"
-    endPoint="create_sale/">
+    model="sale">
   </SaleForm>
 </template>
 

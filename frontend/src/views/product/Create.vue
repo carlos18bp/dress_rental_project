@@ -2,7 +2,7 @@
   <ProductForm
     :productformData="productformData"
     action="create"
-    endPoint="create_product/"
+    model="product"
   >
   </ProductForm>
 </template>

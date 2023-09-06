@@ -1,20 +1,20 @@
-import { useDressRentalStore } from "@/stores/dress_rental";
 import Swal from "sweetalert2";
-
-const dressRentalStore = useDressRentalStore();
+import { useDressRentalStore } from '@/stores/dress_rental';
 
 export function submitHandler(
   action,
-  endPoint,
   formData,
+  model,
   text_response,
   router,
   redirectUrl
 ) {
+  const store = useDressRentalStore();
+
   try {
     action == "create"
-      ? dressRentalStore.createRequest(endPoint, formData)
-      : dressRentalStore.editRequest(endPoint, formData);
+      ? store.createRequest(formData, model)
+      : store.editRequest(formData, model);
 
     Swal.fire({
       icon: "success",

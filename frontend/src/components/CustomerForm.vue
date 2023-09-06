@@ -58,29 +58,29 @@
           />
         </div>
         <div class="mb-3">
-          <label for="customerSecondContact" class="form-label">Número De Contacto Secundario:</label>
+          <label for="customerSecondContact" class="form-label">Número De Contacto Secundario (opcional):</label>
           <input
             type="number"
             class="form-control"
             id="customerSecondContact"
-            placeholder="Número De Contacto Secundario"
+            placeholder="Número De Contacto Secundario (opcional)"
             v-model="customerformData.secondContact" 
           />
         </div>
         <div class="mb-3">
-          <label for="customerAddress" class="form-label">Direccion:</label>
+          <label for="customerAddress" class="form-label">Direccion (opcional):</label>
           <input
             type="text"
             class="form-control"
             id="customerAddress"
-            placeholder="Direccion"
+            placeholder="Direccion (opcional)"
             v-model="customerformData.address" 
           />
         </div>
       </div>
       <div class="d-flex justify-content-center align-items-center">
         <button type="submit" class="btn btn-primary mx-3">Guardar</button>
-        <RouterLink :to="{ name: 'list_customers' }" class="btn btn-danger">Cancelar</RouterLink> 
+        <button @click="goBack" class="btn btn-danger mx-3">Cancelar</button>
       </div>
     </form>
   </div>
@@ -96,16 +96,28 @@
   const props = defineProps({
       action: String,
       customerformData: Object,
-      endPoint: String,
+      model: String,
   });
 
+  /**
+   * 
+   */
   const defineAction = computed(() => {
-    if (props.action == 'create') return 'Crear Nuevo Cliente:';
-    return 'Editar Cliente:';
+    return props.action == 'create' ? 'Crear Nuevo Cliente:' : 'Editar Cliente:';
   });
 
   const onSubmit = () => {
-    let text_response = props.endPoint == 'create_customer/' ? 'Se ha creado tu nuevo cliente' : 'Se ha editado el cliente';
-    submitHandler(props.action, props.endPoint, props.customerformData, text_response, router, '/list_customers');
+    let text_response = 
+      props.action == 'create' ? 'Se ha creado tu nuevo cliente' : 'Se ha editado el cliente';
+
+    submitHandler(
+      props.action, 
+      props.customerformData, 
+      props.model, 
+      text_response,                   
+      router, 
+      '/list_customers');
   };
+
+  const goBack = () => window.history.back();
 </script>
