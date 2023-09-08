@@ -88,7 +88,7 @@
 
 <script setup>
   import { useRouter } from 'vue-router';
-  import { submitHandler } from '@/shared/submitHandler'; 
+  import { submitHandler } from '@/shared/submit_handler'; 
   import { computed} from 'vue';
 
   const router = useRouter();

@@ -31,15 +31,14 @@
 <script setup>
   import { onMounted, reactive } from "vue";
   import { useRoute } from "vue-router";
-  import SaleTable from '@/components/SaleTable.vue';
+  import SaleTable from '@/components/sale/SaleTable.vue';
+  import { decodeHandler } from '@/shared/decode_handler';
 
   const route = useRoute();
   const detailProduct = reactive({});
 
   onMounted(async () => {
-    const encodedData = route.params.product;
-    const decodedData = await JSON.parse(decodeURIComponent(encodedData));
-    detailProduct.product = decodedData;
+    detailProduct.product = await decodeHandler(route.params.product);
   });
 
   const goBack = () => {

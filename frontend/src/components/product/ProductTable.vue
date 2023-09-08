@@ -3,6 +3,7 @@
     class="table table-striped table-hover mt-4 text-center">
     <thead>
       <tr>
+        <th scope="col">#</th>
         <th scope="col">Referencia</th>
         <th scope="col">Título</th>
         <th scope="col">Categoría</th>
@@ -11,8 +12,9 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr v-for="product in products" :key="product.id">
-        <th scope="row">{{ product.reference }}</th>
+      <tr v-for="(product, index) in products" :key="product.id">
+        <th>{{ index + 1 }}</th>
+        <th>{{ product.reference }}</th>
         <td>{{ product.title }}</td>
         <td>{{ product.categoryType }}</td>
         <td>
@@ -59,7 +61,7 @@
 </template>
 
 <script setup>
-   import { deleteHandler } from '@/shared/deleteHandler';
+   import { deleteHandler } from '@/shared/delete_handler';
    import { useDressRentalStore } from '@/stores/dress_rental';
 
   const store = useDressRentalStore();

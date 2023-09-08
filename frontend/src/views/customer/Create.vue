@@ -8,7 +8,7 @@
 
 <script setup>
   import { reactive } from 'vue';
-  import CustomerForm from '@/components/CustomerForm.vue';
+  import CustomerForm from '@/components/customer/CustomerForm.vue';
 
   const customerformData = reactive({
     identification: '',

@@ -9,7 +9,7 @@
   
 <script setup>
   import { reactive } from "vue";
-  import ProductForm from "@/components/ProductForm.vue";
+  import ProductForm from "@/components/product/ProductForm.vue";
 
   const productformData = reactive({
     title: "",

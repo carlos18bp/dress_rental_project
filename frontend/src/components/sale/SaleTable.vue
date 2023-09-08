@@ -15,7 +15,7 @@
     </thead>
     <tbody class="table-group-divider">
       <tr v-for="(sale, index) in sales" :key="sale.id">
-        <th scope="row">{{ index + 1 }}</th>
+        <th>{{ index + 1 }}</th>
         <td v-if="sale.customer">
           {{ sale.customer.identification }}</td>
         <td>
@@ -30,7 +30,7 @@
         </td>
         <td v-if="getProducts(sale.id).length > 1"><i class="bi bi-plus-lg"></i> 1</td>
         <td v-else>1</td>
-        <td>{{ sale.type }}</td>
+        <td><b>{{ sale.type }}</b></td>
         <td>{{ sale.deliveryDate }}</td>
         <td>{{ sale.returnDate }}</td>
         <td>
@@ -76,7 +76,7 @@
 
 <script setup>
   import Swal from "sweetalert2";
-  import { deleteHandler } from '@/shared/deleteHandler';
+  import { deleteHandler } from '@/shared/delete_handler';
   import { useDressRentalStore } from '@/stores/dress_rental';
 
   const store = useDressRentalStore();

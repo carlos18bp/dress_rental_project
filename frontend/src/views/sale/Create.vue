@@ -9,7 +9,7 @@
 <script setup>
   import { onMounted, reactive} from 'vue';
   import { useRoute } from "vue-router";
-  import SaleForm  from '@/components/SaleForm.vue';
+  import SaleForm  from '@/components/sale/SaleForm.vue';
 
   const route = useRoute();
 

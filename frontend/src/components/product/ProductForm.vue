@@ -51,7 +51,7 @@
   
 <script setup>
   import { useRouter } from "vue-router";
-  import { submitHandler } from "@/shared/submitHandler";
+  import { submitHandler } from "@/shared/submit_handler";
   import { useDressRentalStore } from '@/stores/dress_rental';
   import { computed } from "vue";
 

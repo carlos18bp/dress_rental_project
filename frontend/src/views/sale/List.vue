@@ -19,7 +19,7 @@
                  @change="listAllSales"
                  :checked="isAllSalesChecked">
           <label class="form-check-label" for="allSales">
-            Listar Ventas/Alquileres
+            <b>Listar Ventas/Alquileres</b>
           </label>
         </div>
         <div class="col form-check">
@@ -30,7 +30,7 @@
                  @change="listSalesByTypeSale"
                  :checked="isSalesByTypeSaleChecked">
           <label class="form-check-label" for="salesByTypeSale">
-            Listar Ventas
+            <b>Listar Ventas</b>
           </label>
         </div>
         <div class="col form-check">
@@ -41,7 +41,7 @@
                  @change="listSalesByTypeRental"
                  :checked="isSalesByTypeRentalChecked">
           <label class="form-check-label" for="salesByTypeRental">
-            Listar Alquileres
+            <b>Listar Alquileres</b>
           </label>
         </div>
         <div class="col form-check">
@@ -52,7 +52,7 @@
                  @change="listPendingDeliverySales"
                  :checked="isPendingDeliverySalesChecked">
           <label class="form-check-label" for="pendingDeliverySales">
-            Ventas pendientes por entrega
+            <b>Ventas pendientes por entrega</b>
           </label>
         </div>
         <div class="col form-check">
@@ -63,7 +63,7 @@
                  @change="listPendingDeliveryRental"
                  :checked="isPendingDeliveryRentalChecked">
           <label class="form-check-label" for="pendingDeliveryRental">
-            Alquileres pendientes por entrega
+            <b>Alquileres pendientes por entrega</b>
           </label>
         </div>
         <div class="col form-check">
@@ -74,7 +74,7 @@
                  @change="listExpiredSales"
                  :checked="isExpiredSalesChecked">
           <label class="form-check-label" for="expiredSales">
-            Alquileres vencidos
+            <b>Alquileres vencidos</b>
           </label>
         </div>
       </div>
@@ -82,26 +82,53 @@
 
     <div class="container mt-4 p-0">
       <div class="row">
-        <div class="col">
-          <label for="startDate" class="form-label">Fecha de Inicio:</label>
+        <div class="col d-flex align-items-center">
+          <label for="startDate" class="form-label"><b>Fecha de Inicio:</b></label>
           <input
             type="date"
             class="form-control"
             id="startDate"
             placeholder="Fecha de Inicio"
             v-model="startDate"
-            @change="filterByDate"
+            @change="selectList"
           />
         </div>
-        <div class="col">
-          <label for="endDate" class="form-label">Fecha de Fin:</label>
+        <div class="col d-flex align-items-center">
+          <label for="endDate" class="form-label"><b>Fecha de Fin:</b></label>
           <input
             type="date"
             class="form-control"
             id="endDate"
             placeholder="Fecha de Fin"
             v-model="endDate"
-            @change="filterByDate"
+            @change="selectList"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-4 p-0">
+      <div class="row">
+        <div class="col d-flex align-items-center">
+          <label for="searchCustomer" class="form-label"><b>Buscar Cliente:</b></label>
+          <input
+            type="number"
+            class="form-control"
+            id="searchCustomer"
+            placeholder="Ingrese numero de cedula"
+            v-model="searchCustomer"
+            @input="selectList"
+          />
+        </div>
+        <div class="col d-flex align-items-center">
+          <label for="searchProduct" class="form-label"><b>Buscar Producto:</b></label>
+          <input
+            type="text"
+            class="form-control"
+            id="searchProduct"
+            placeholder="Ingrese referencia del producto"
+            v-model="searchProduct"
+            @input="selectList"
           />
         </div>
       </div>
@@ -117,7 +144,7 @@
 <script setup>
   import { RouterLink } from "vue-router";
   import { onMounted, ref, watchEffect } from 'vue';
-  import SaleTable from '@/components/SaleTable.vue'; 
+  import SaleTable from '@/components/sale/SaleTable.vue'; 
   import { useDressRentalStore } from '@/stores/dress_rental';
 
   const store = useDressRentalStore();
@@ -133,6 +160,9 @@
   const startDate = ref('');
   const endDate = ref('');
 
+  const searchCustomer = ref('');
+  const searchProduct = ref('');
+
   onMounted(async () => await fetchSales());
 
   watchEffect(async () => await store.fetchSalesData());
@@ -142,57 +172,13 @@
    */
    async function fetchSales() {
     await store.fetchSalesData();
-    sales.value = store.sales;
-
-    listAllSales();
-    filterSalesByTypeSale();
-    filterSalesByTypeRental();
-    filterPendingDeliverySale();
-    filterPendingDeliveryRental();
-    filterExpiredDeliverySales();
+    selectList();
    }
 
   /**
    * 
    */
-  function filterSalesByTypeSale() {
-    return store.sales.filter(item => item.type === 'Venta');    
-  }
-
-  /**
-   * 
-   */
-  function filterSalesByTypeRental() {
-    return store.sales.filter(item => item.type === 'Alquiler');
-  }
-
-  /**
-   * 
-   */
-  function filterPendingDeliverySale() {
-    return store.sales.filter(item => item.type === 'Venta' && !item.isProductDelivered);
-  }
-
-  /**
-   * 
-   */
-  function filterPendingDeliveryRental() {
-    return store.sales.filter(item => item.type === 'Alquiler' && !item.isProductDelivered);
-  }
-
-  /**
-   * 
-   */
-  function filterExpiredDeliverySales() {
-    return store.sales.filter(item => item.type === 'Alquiler' &&
-                                      item.isProductReturn === false && 
-                                      new Date(item.returnDate) < new Date());
-  }
-
-  /**
-   * 
-   */
-  function filterByDate() {
+  function selectList() {
     if (isAllSalesChecked.value) listAllSales();
     if (isSalesByTypeSaleChecked.value) listSalesByTypeSale();
     if (isSalesByTypeRentalChecked.value) listSalesByTypeRental();
@@ -204,7 +190,7 @@
   /**
    * 
    */
-  function filterByDateRange(sales) {
+  function getFilterByDate(sales) {
     const startDateValid = isValidDate(startDate.value);
     const endDateValid = isValidDate(endDate.value);
 
@@ -231,8 +217,27 @@
   /**
    * 
    */
+  function getFilterByCustomer(sales) {
+    const query = searchCustomer.value.toString();
+    return sales.filter(sale => sale.customer.identification.toString().includes(query));   
+  }
+
+  /**
+   * 
+   */
+   function getFilterByProduct(sales) {
+    return sales.filter(sale => {
+            return sale.products.some(product => product.reference.includes(searchProduct.value));
+          });
+  }
+
+  /**
+   * 
+   */
   function listAllSales() {
-    sales.value = filterByDateRange(store.sales);
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.sales)));
     setSingleChecked(isAllSalesChecked);
   }
 
@@ -240,7 +245,9 @@
    * 
    */
   function listSalesByTypeSale() {
-    sales.value = filterByDateRange(filterSalesByTypeSale());    
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.filterSalesByTypeSale)));    
     setSingleChecked(isSalesByTypeSaleChecked);
   }
 
@@ -248,7 +255,9 @@
    * 
    */
   function listSalesByTypeRental() {
-    sales.value = filterByDateRange(filterSalesByTypeRental());    
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.filterSalesByTypeRental)));    
     setSingleChecked(isSalesByTypeRentalChecked);
   }
 
@@ -256,7 +265,9 @@
    * 
    */
   function listPendingDeliverySales() {
-    sales.value = filterByDateRange(filterPendingDeliverySale());   
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.filterPendingDeliverySale)));   
     setSingleChecked(isPendingDeliverySalesChecked);
   }
 
@@ -264,7 +275,9 @@
    * 
    */
   function listPendingDeliveryRental() {
-    sales.value = filterByDateRange(filterPendingDeliveryRental());   
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.filterPendingDeliveryRental)));   
     setSingleChecked(isPendingDeliveryRentalChecked);
   }
 
@@ -272,7 +285,9 @@
    * 
    */
   function listExpiredSales() {
-    sales.value = filterByDateRange(filterExpiredDeliverySales());   
+    sales.value = getFilterByProduct(
+      getFilterByCustomer(
+        getFilterByDate(store.filterExpiredDeliverySales)));   
     setSingleChecked(isExpiredSalesChecked);
   }
 

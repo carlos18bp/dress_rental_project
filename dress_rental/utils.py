@@ -1,5 +1,3 @@
-import json
-
 def get_products(products):
     products_serialized = []
 

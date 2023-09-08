@@ -3,6 +3,7 @@
     class="table table-striped table-hover mt-4 text-center">
     <thead>
       <tr>
+        <th scope="col">#</th>
         <th scope="col">Cédula</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
@@ -12,8 +13,9 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr v-for="customer in customers" :key="customer.id">
-        <th scope="row">{{ customer.identification }}</th>
+      <tr v-for="(customer, index) in customers" :key="customer.id">
+        <td>{{ index + 1 }}</td>
+        <th>{{ customer.identification }}</th>
         <td>{{ customer.firstName }}</td>
         <td>{{ customer.lastName }}</td>
         <td>{{ customer.email }}</td>
@@ -49,7 +51,7 @@
 </template>
 
 <script setup>
-  import { deleteHandler } from '@/shared/deleteHandler';
+  import { deleteHandler } from '@/shared/delete_handler';
   
   const props = defineProps({
     customers: Object,

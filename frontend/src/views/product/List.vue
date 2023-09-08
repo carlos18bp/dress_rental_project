@@ -19,7 +19,7 @@
                  @change="listAllProducts"
                  :checked="isAllProductsChecked">
           <label class="form-check-label" for="allProducts">
-            Listar productos
+            <b>Listar productos</b>
           </label>
         </div>
         <div class="col form-check">
@@ -30,7 +30,7 @@
                  @change="listAvailableProducts"
                  :checked="isAvailableProductsChecked">
           <label class="form-check-label" for="availableProducts">
-            Listar productos disponibles para venta/alquiler
+            <b>Listar productos disponibles para venta/alquiler</b>
           </label>
         </div>
         <div class="col form-check">
@@ -41,7 +41,7 @@
                  @change="listSaleProducts"
                  :checked="isSaleProductsChecked">
           <label class="form-check-label" for="saleProducts">
-            Listar productos Vendidos
+            <b>Listar productos Vendidos</b>
           </label>
         </div>
         <div class="col form-check">
@@ -52,10 +52,44 @@
                  @change="listRentalProducts"
                  :checked="isRentalProductsChecked">
           <label class="form-check-label" for="rentalProducts">
-            Listar productos Alquilados
+            <b>Listar productos Alquilados</b>
           </label>
         </div>
       </div>
+
+      <div class="container mt-4 p-0">
+        <div class="row">
+          <div class="col d-flex align-items-center">
+            <label for="searchProduct" class="form-label"><b>Buscar Producto:</b></label>
+            <input
+              type="text"
+              class="form-control"
+              id="searchProduct"
+              placeholder="Ingrese referencia del producto"
+              v-model="searchReference"
+              @input="selectList"
+            />
+          </div>
+          <div class="col d-flex align-items-center">
+            <label for="searchProduct" class="form-label"><b>Buscar por Categoria:</b></label>
+            <select
+            class="form-select"
+            v-model="searchCategoryType"
+            @change="selectList"
+            required>
+            <option disabled>Seleccionar una opción</option>
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.type">
+              {{ category.type }}
+            </option>
+            <option>Todas</option>
+          </select>
+          </div>
+        </div>
+      </div>
+
     </div>
     <ProductTable
       :products="products"
@@ -67,82 +101,111 @@
 <script setup>
   import { RouterLink } from "vue-router";
   import { ref, onMounted, watchEffect } from 'vue';
-  import ProductTable from '@/components/ProductTable.vue';
+  import ProductTable from '@/components/product/ProductTable.vue';
   import { useDressRentalStore } from '@/stores/dress_rental';
  
 
   const store = useDressRentalStore();
+  const categories = ref([]);
   const products = ref([]);
   
-  const allProducts = ref([]);
   const isAllProductsChecked = ref(true);
-  const availableProducts = ref([]);
   const isAvailableProductsChecked = ref(false);
-  const saleProducts = ref([]);
   const isSaleProductsChecked = ref(false);
-  const rentalProducts = ref([]);
   const isRentalProductsChecked = ref(false);
 
-  onMounted(async () => {
-    fetchProducts();
-  });
+  const searchReference = ref('');
+  const searchCategoryType = ref('');
 
-  watchEffect(() => fetchProducts());
+  onMounted(async () => fetchProducts());
+
+  watchEffect(async () => await store.fetchProductsData());
 
   /**
    * 
    */
   async function fetchProducts() {
-    await store.fetchProductsData();
-    allProducts.value = store.products;
-    listAllProducts();
+    await store.fetchCategoriesData();
+    categories.value = store.categories;
 
-    availableProducts.value = products.value.filter(item => !item.hasSale);
-    saleProducts.value = products.value.filter(item => item.hasSale);
-    rentalProducts.value = products.value.filter(item => item.hasRental);
+    await store.fetchProductsData();
+    selectList();
+  }
+
+  /**
+   * 
+   */
+  function selectList() {
+    if (isAllProductsChecked.value) listAllProducts();
+    if (isAvailableProductsChecked.value) listAvailableProducts();
+    if (isSaleProductsChecked.value) listSaleProducts();
+    if (isRentalProductsChecked.value) listRentalProducts();
+  }
+
+  /**
+   * 
+   */
+  function filterByProduct(products) {
+    return products.filter(item => item.reference.includes(searchReference.value));
+  }
+
+  /**
+   * 
+   */
+  function filterByCategory(products) {
+    if (searchCategoryType.value && searchCategoryType.value !== 'Todas') {
+      return products.filter(item => item.categoryType === searchCategoryType.value);
+    } else {
+      return products;
+    }
   }
 
   /**
    * 
    */
   function listAllProducts() {
-    products.value = allProducts.value;
-    isAllProductsChecked.value = true;
-    isAvailableProductsChecked.value = false;
-    isSaleProductsChecked.value = false;
-    isRentalProductsChecked.value = false;
+    products.value = filterByCategory(filterByProduct(store.products));
+    setSingleChecked(isAllProductsChecked);
   }
 
   /**
    * 
    */
   function listAvailableProducts() {
-    products.value = availableProducts.value;
-    isAllProductsChecked.value = false;
-    isAvailableProductsChecked.value = true;
-    isSaleProductsChecked.value = false;
-    isRentalProductsChecked.value = false;
+    products.value = filterByCategory(filterByProduct(store.filterAvailableProducts));
+    setSingleChecked(isAvailableProductsChecked);
   }
 
   /**
    * 
    */
   function listSaleProducts() {
-    products.value = saleProducts.value;
-    isAllProductsChecked.value = false;
-    isAvailableProductsChecked.value = false;
-    isSaleProductsChecked.value = true;
-    isRentalProductsChecked.value = false;
+    products.value = filterByCategory(filterByProduct(store.filterSaleProducts));
+    setSingleChecked(isSaleProductsChecked);
   }
 
-    /**
+  /**
    * 
    */
-   function listRentalProducts() {
-    products.value = rentalProducts.value;
-    isAllProductsChecked.value = false;
-    isAvailableProductsChecked.value = false;
-    isSaleProductsChecked.value = false;
-    isRentalProductsChecked.value = true;
+  function listRentalProducts() {
+    products.value = filterByCategory(filterByProduct(store.filterRentalProducts));
+    setSingleChecked(isRentalProductsChecked);
+  }
+
+  /**
+   * 
+   * @param {*} productCheckedToSet 
+   */
+  function setSingleChecked(productCheckedToSet) {
+    const productsChecked = [
+      isAllProductsChecked,
+      isAvailableProductsChecked,
+      isSaleProductsChecked,
+      isRentalProductsChecked
+    ];
+
+    for (const checked of productsChecked) {
+      checked.value = checked === productCheckedToSet ? true : false;
+    }
   }
 </script>

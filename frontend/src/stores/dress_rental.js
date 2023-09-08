@@ -18,6 +18,47 @@ export const useDressRentalStore = defineStore("dress_rental", {
     sales: [],
     areUpdateSales: false,
   }),
+  getters: {
+    filterByIdentification: (state) => (query) => {
+      return state.customers.filter(customer => {
+        return customer.identification.toString().includes(query)
+      });
+    },
+    filterByFirstOrLastName: (state) => (query) => {
+      return state.customers.filter(customer => {
+        return customer.firstName.toLowerCase().includes(query) || 
+               customer.lastName.toLowerCase().includes(query);
+      });
+    },
+    filterAvailableProducts: (state) => {
+      return state.products.filter(product => !product.hasSale);
+    },
+    filterSaleProducts: (state) => {
+      return state.products.filter(product => product.hasSale);
+    },
+    filterRentalProducts: (state) => {
+      return state.products.filter(product => product.hasRental);
+    },
+    filterSalesByTypeSale: (state) => {
+      return state.sales.filter(sale => sale.type === 'Venta');
+    },
+    filterSalesByTypeRental: (state) => {
+      return state.sales.filter(sale => sale.type === 'Alquiler');
+    },
+    filterPendingDeliverySale: (state) => {
+      return state.sales.filter(sale => sale.type === 'Venta' && 
+                                        !sale.isProductDelivered);
+    },
+    filterPendingDeliveryRental: (state) => {
+      return state.sales.filter(sale => sale.type === 'Alquiler' && 
+                                        !sale.isProductDelivered);
+    },
+    filterExpiredDeliverySales: (state) => {
+      return state.sales.filter(sale => sale.type === 'Alquiler' &&
+                                        sale.isProductReturn === false && 
+                                        new Date(sale.returnDate) < new Date());
+    },
+  },
   actions: {
     async init() {
       if(!this.areUpdateCustomers) this.fetchCustomersData();

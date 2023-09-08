@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 import random
-from datetime import datetime
 from datetime import date, timedelta
 from dress_rental.models import Customer, Product, Sale
 
@@ -17,29 +16,25 @@ class Command(BaseCommand):
         customers = Customer.objects.all()
         products = Product.objects.all()
 
-        limit_date_iteration = 90000
-        limit_product_iteration = 90000
-
         for _ in range(number_of_sales):
             product = random.choice(products)
             while product.sales.filter(type='sale').exists():
                 product = random.choice(products)
-                if (limit_product_iteration := limit_product_iteration - 1) == 0:
-                    return
 
             customer = random.choice(customers)
             price = fake.random_int(min=0, max=999)
             is_product_delivered = fake.boolean()
             type = random.choice(['rental', 'sale'])
 
-            seed_delta = 10
-            delivery_date, return_date = self._generate_dates(fake, seed_delta)
-            if type == 'rental':
-                while not self._check_create_sale(delivery_date, return_date):
-                    seed_delta += 3
-                    delivery_date, return_date = self._generate_dates(fake, seed_delta)
-                    if (limit_date_iteration := limit_date_iteration - 1) == 0:
-                        return
+            sales = Product.objects.get(pk = product.id).sales.all()
+            last_sale = sales.last()
+            if last_sale is not None:                
+                delivery_date, return_date = self._generate_dates(fake, last_sale.return_date)
+                               
+                while not self._check_create_sale(delivery_date, return_date, last_sale):
+                    delivery_date, return_date = self._generate_dates(fake, last_sale.return_date)
+            else:
+              delivery_date, return_date = self._generate_dates(fake, date.today())  
                     
             new_sale = Sale.objects.create(
                 type = type,
@@ -59,18 +54,19 @@ class Command(BaseCommand):
 
         print(f'"{len(Sale.objects.all())}" sale records created')
 
-    def _generate_dates(self, fake, seed_delta):
-        delivery_date = fake.date_between(start_date=date.today(), end_date=date.today() + timedelta(days=seed_delta))
-        return_date = fake.date_between(start_date=delivery_date, end_date=delivery_date + timedelta(days=seed_delta*2))
+    def _generate_dates(self, fake, return_date_last_sale):
+        seed_delta = fake.random_int(min=2, max=6)
+        delivery_date = fake.date_between(start_date = return_date_last_sale + timedelta(days=1), 
+                                          end_date = return_date_last_sale + timedelta(days=seed_delta))
+        return_date = fake.date_between(start_date = delivery_date + timedelta(days=1), 
+                                        end_date = delivery_date + timedelta(days=seed_delta))
         return delivery_date, return_date
 
-    def _check_create_sale(self, delivery_date, return_date):
-        sales = Sale.objects.all()
-        for sale in sales:
-            if sale.type == 'rental':                
-                if return_date < sale.delivery_date:
-                    return False
-                elif sale.return_date < delivery_date:
-                    return False
+    def _check_create_sale(self, delivery_date, return_date, sale):        
+        if sale.type == 'rental':                
+            if return_date < sale.delivery_date:
+                return True
+            elif sale.return_date < delivery_date:
+                return True
             
-        return True
+        return False

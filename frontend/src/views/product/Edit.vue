@@ -10,7 +10,7 @@
 <script setup>
   import { onMounted, reactive } from "vue";
   import { useRoute } from "vue-router";
-  import ProductForm from "@/components/ProductForm.vue";
+  import ProductForm from "@/components/product/ProductForm.vue";
 
   const route = useRoute();
   const editFormData = reactive({});

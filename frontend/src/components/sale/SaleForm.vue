@@ -179,7 +179,7 @@
 <script setup>
   import { useRouter } from "vue-router";
   import Swal from "sweetalert2";
-  import { submitHandler } from "@/shared/submitHandler";
+  import { submitHandler } from "@/shared/submit_handler";
   import { computed, ref, watchEffect } from "vue";
   import { useDressRentalStore } from '@/stores/dress_rental';
 
@@ -204,27 +204,25 @@
             props.saleformData.sale.deliveryDate = '';
             props.saleformData.sale.returnDate = '';
         });
+      } else {
+        store.sales.forEach((sale) => {
+          sale.products.forEach((product) => {
+            props.saleformData.sale.productIds.forEach((productId) => {              
+              if (product.id === productId) {
+                if(!isValidDate(sale.deliveryDate, 
+                                sale.returnDate, 
+                                props.saleformData.sale.deliveryDate, 
+                                props.saleformData.sale.returnDate)) {
+                  let textWarning = `Este rango de fecha de alquiler no esta disponible para
+                      el producto: ${product.reference}.
+                      Alquiler registrado del: ${sale.deliveryDate} a ${sale.returnDate}.`;
+                  warningMessageForInvalidDate(textWarning);              
+                }            
+              }
+            }); 
+          });
+        }); 
       }
-
-      store.sales.forEach((sale) => {
-        sale.products.forEach((product) => {
-          props.saleformData.sale.productIds.forEach((productId) => {
-            if (props.saleformData.sale.type === 'Alquiler' &&
-                sale.type === 'Alquiler' && 
-                product.id === productId) {  
-              if(isValidDate(new Date(sale.deliveryDate), 
-                             new Date(sale.returnDate),
-                             new Date(props.saleformData.sale.deliveryDate), 
-                             new Date(props.saleformData.sale.returnDate))) {
-                let textWarning = `Este rango de fecha de alquiler no esta disponible para
-                    el producto: ${product.reference}.
-                    Alquiler registrado del: ${sale.deliveryDate} a ${sale.returnDate}.`;
-                warningMessageForInvalidDate(textWarning);              
-              }            
-            }
-          }); 
-        });
-      }); 
     }
   });
 
@@ -292,7 +290,7 @@
    * 
    */
    function getAvailableProducts() {
-    return store.products.filter(item => !item.hasSale || 
+    return store.products.filter(item => item.hasRental || 
                                          props.saleformData.sale.productIds.includes(item.id));
 
   }
@@ -312,13 +310,33 @@
    * @param {*} newEndDate 
    */
   function isValidDate(startDate, endDate, newStartDate, newEndDate) {
-    if(newEndDate < startDate) {
+    const startDateValid = isDate(newStartDate);
+    const endDateValid = isDate(newEndDate);
+
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    newStartDate = new Date(newStartDate);
+    newEndDate = new Date(newEndDate);    
+
+    if(newEndDate < startDate &&
+       endDate < newStartDate) {
       return true;
-    } else if(endDate < newStartDate) {
+    } else if (newEndDate < startDate || 
+       endDate < newStartDate) { 
       return true;
-    } else {
+    } else if (startDateValid && endDateValid) {
       return false;
+    } else {
+      return true;
     }
+  }
+
+  /**
+   * 
+   * @param {*} dateValue 
+   */
+   function isDate(date) {
+    return !isNaN(new Date(date));
   }
 
   /**
