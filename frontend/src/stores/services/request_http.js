@@ -3,6 +3,13 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
+/**
+ * Request endpoint
+ * @param {string} method - Type request.
+ * @param {string} url - Endpoint
+ * @param {object} params - Params.
+ * @returns {object} - Data and status from endpoint.
+ */
 async function makeRequest(method, url, params = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -34,22 +41,49 @@ async function makeRequest(method, url, params = {}) {
   }
 }
 
+/**
+ * Create request.
+ * @param {string} url - Endpoint.
+ * @param {object} params - Params.
+ * @returns {object} - Data and status from endpoint.
+ */
 export async function create_request(url, params) {
   return await makeRequest("POST", url, params);
 }
 
+/**
+ * Edit request.
+ * @param {string} url - Endpoint.
+ * @param {object} params - Params.
+ * @returns {object} - Data and status from endpoint.
+ */
 export async function edit_request(url, params) {
   return await makeRequest("PUT", url, params);
 }
 
+/**
+ * Get request.
+ * @param {string} url - Endpoint.
+ * @returns {object} - Data and status from endpoint.
+ */
 export async function get_request(url) {
   return await makeRequest("GET", url);
 }
 
+/**
+ * Delete request.
+ * @param {string} url - Endpoint.
+ * @returns {object} - Data and status from endpoint.
+ */
 export async function delete_request(url) {
   return await makeRequest("DELETE", url);
 }
 
+/**
+ * Update request.
+ * @param {string} url - Endpoint.
+ * @returns {object} - Data and status from endpoint.
+ */
 export async function update_request(url) {
   return await makeRequest("PUT", url);
 }

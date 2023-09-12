@@ -54,7 +54,7 @@
   watchEffect(async () => fetchCustomers());  
 
   /**
-   * 
+   * Fetch and update customer data.
    */
   async function fetchCustomers() {
     await store.fetchCustomersData();
@@ -62,7 +62,7 @@
   }
 
   /**
-   * 
+   * Filter by identification.
    */
   function filterByIdentification() {
     searchFirstOrLastName.value = '';
@@ -71,7 +71,7 @@
   }
 
   /**
-   * 
+   * Filter by first or last name.
    */
   function filterByFirstOrLastName() {
     searchIdentification.value = '';

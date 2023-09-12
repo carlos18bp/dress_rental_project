@@ -89,7 +89,7 @@
 <script setup>
   import { useRouter } from 'vue-router';
   import { submitHandler } from '@/shared/submit_handler'; 
-  import { computed} from 'vue';
+  import { computed } from 'vue';
 
   const router = useRouter();
 
@@ -100,12 +100,16 @@
   });
 
   /**
-   * 
+   * Check action to define view title.
+   * @returns {string} - view title.
    */
   const defineAction = computed(() => {
     return props.action == 'create' ? 'Crear Nuevo Cliente:' : 'Editar Cliente:';
   });
 
+  /**
+   * Submit event.
+   */
   const onSubmit = () => {
     let text_response = 
       props.action == 'create' ? 'Se ha creado tu nuevo cliente' : 'Se ha editado el cliente';
@@ -119,5 +123,8 @@
       '/list_customers');
   };
 
+  /**
+   * Returns to the previous page.
+   */
   const goBack = () => window.history.back();
 </script>

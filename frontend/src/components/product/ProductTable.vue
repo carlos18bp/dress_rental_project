@@ -38,14 +38,14 @@
           <router-link 
             :to="{ name: 'detail_product', 
                     params: { 
-                    product: encodeURIComponent(JSON.stringify(getProduct(product.id))) } }" 
+                    product: encodeProduct(product.id) } }" 
             class="btn btn-secondary">
               Detalle
           </router-link>
           <router-link 
             :to="{ name: 'edit_product', 
                     params: { 
-                    product: encodeURIComponent(JSON.stringify(getProduct(product.id))) } }" 
+                    product: encodeProduct(product.id) } }" 
             class="btn btn-info">
             Editar Producto
           </router-link>
@@ -71,14 +71,18 @@
   });
 
   /**
-   * 
+   * Encode product to send as parameter via router link.
+   * @param {integer} productId - Product id.
+   * @returns {object} - Encode product.
    */
-   function getProduct(productId) {
-    return store.products.find(item => item.id === productId);
+   function encodeProduct(productId) {
+    return encodeURIComponent(JSON.stringify(store.productById(productId)));
   }
 
   /**
-   * 
+   * Check any sale or rental.
+   * @param {object} product - json product.
+   * @returns {boolean} - product has any sale or rental state.
    */
   function hasSaleOrRental(product) {
     return product.hasSale || product.hasRental

@@ -33,7 +33,7 @@
             required>
             <option disabled>Seleccionar una opción</option>
             <option
-              v-for="category in dressRentalStore.categories"
+              v-for="category in store.categories"
               :key="category.id"
               :value="category.id">
               {{ category.type }}
@@ -62,12 +62,19 @@
   });
 
   const router = useRouter();
-  const dressRentalStore = useDressRentalStore();
+  const store = useDressRentalStore();
 
+  /**
+   * Check action to define view title.
+   * @returns {string} - view title.
+   */
   const defineAction = computed(() => {
-    return props.action == "create" ?"Crear Nuevo Producto:" : "Editar Producto:";
+    return props.action == "create" ? "Crear Nuevo Producto:" : "Editar Producto:";
   });
 
+  /**
+   * Submit event.
+   */
   const onSubmit = () => {
     let text_response =
       props.endPoint == "create_product/"
@@ -83,5 +90,8 @@
     );
   };
 
+  /**
+   * Returns to the previous page.
+   */
   const goBack = () => window.history.back();
 </script>

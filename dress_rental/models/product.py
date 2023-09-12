@@ -2,6 +2,19 @@ from django.db import models
 from dress_rental.models import Category
 
 class Product(models.Model):
+    """
+    Product model.
+
+    :ivar title: title product.
+    :vartype title: str
+    :ivar reference: reference product.
+    :vartype reference: str
+    :ivar category: category product.
+    :vartype category: str
+    :ivar measures: measures product.
+    :vartype measures: json_data: dict
+    """
+
     title = models.CharField(max_length=40)
     reference = models.CharField(max_length=40)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)

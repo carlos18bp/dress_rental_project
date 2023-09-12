@@ -11,7 +11,5 @@
   
   const store = useDressRentalStore();
 
-  onMounted(async () => {
-    await store.init();
-  });
+  onMounted(async () => await store.init());
 </script>

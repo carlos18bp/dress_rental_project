@@ -10,8 +10,8 @@
       <RouterLink :to="{ name: 'list_products' }" class="btn btn-primary btn-lg">
         Productos
       </RouterLink>
-      <RouterLink :to="{ name: 'list_sales' }" class="btn btn-primary btn-lg">
-        Ventas
+      <RouterLink :to="{ name: 'list_invoices' }" class="btn btn-primary btn-lg">
+        Facturas
       </RouterLink>
     </div>
   </div>

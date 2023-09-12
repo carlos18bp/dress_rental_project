@@ -1,6 +1,13 @@
 from django.db import models
 
 class Category(models.Model):
+    """
+    Category model.
+
+    :ivar type: type category.
+    :vartype name: str
+    """
+
     OPTION_TYPE = (
         ('man', 'Hombre'),
         ('woman', 'Mujer'),

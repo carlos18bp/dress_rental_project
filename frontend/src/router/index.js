@@ -29,24 +29,24 @@ const router = createRouter({
       component: () => import('@/views/customer/Detail.vue')
     },
     {
-      path: '/create_sale/:customer_id?',
-      name: 'create_sale',
-      component: () => import('@/views/sale/Create.vue')
+      path: '/create_invoice/:customer_id?',
+      name: 'create_invoice',
+      component: () => import('@/views/invoice/Create.vue')
     },
     {
-      path: '/edit_sale/:sale',
-      name: 'edit_sale',
-      component: () => import('@/views/sale/Edit.vue')
+      path: '/edit_invoice/:invoice',
+      name: 'edit_invoice',
+      component: () => import('@/views/invoice/Edit.vue')
     },
     {
-      path: '/list_sales',
-      name: 'list_sales',
-      component: () => import('@/views/sale/List.vue')
+      path: '/list_invoices',
+      name: 'list_invoices',
+      component: () => import('@/views/invoice/List.vue')
     },
     {
-      path: '/detail_sale/:sale',
-      name: 'detail_sale',
-      component: () => import('@/views/sale/Detail.vue')
+      path: '/detail_invoice/:invoice',
+      name: 'detail_invoice',
+      component: () => import('@/views/invoice/Detail.vue')
     },
     {
       path: '/create_product/',

@@ -1,6 +1,11 @@
 import Swal from 'sweetalert2';
 import { useDressRentalStore } from '@/stores/dress_rental';
 
+/**
+ * Show a warning message for delete record.
+ * @param {integer} id - Id record.
+ * @param {string} model - Model record.
+ */
 export function deleteHandler(id, model) {
   const store = useDressRentalStore();
 
@@ -25,7 +30,7 @@ export function deleteHandler(id, model) {
           case 'product':
               text_message = "Tu producto ha sido eliminado."
               break;
-          case 'sale':
+          case 'invoice':
               text_message = "Tu venta ha sido eliminado."
               break;
           default:

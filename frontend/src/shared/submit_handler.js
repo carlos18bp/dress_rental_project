@@ -1,6 +1,15 @@
 import Swal from "sweetalert2";
 import { useDressRentalStore } from '@/stores/dress_rental';
 
+/**
+ * Show a success message for create or edit request.
+ * @param {string} action - Create o edit action.
+ * @param {object} formData - form data to create or edit a record.
+ * @param {string} model - Model record.
+ * @param {string} text_response - text success message.
+ * @param {object} router - Router utility.
+ * @param {string} redirectUrl - Redirect endpoint.
+ */
 export function submitHandler(
   action,
   formData,

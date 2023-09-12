@@ -1,6 +1,6 @@
 <template>
   <CustomerForm
-    :customerformData="editFormData.customer"
+    :customerformData="customer"
     action="edit"
     model="customer"
   >
@@ -8,15 +8,17 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
-import { useRoute } from "vue-router";
-import CustomerForm from "@/components/customer/CustomerForm.vue";
-import { decodeHandler } from '@/shared/decode_handler';
+  import { onMounted, ref } from "vue";
+  import { useRoute } from "vue-router";
+  import Customer from '@/models/customer';
+  import CustomerForm from "@/components/customer/CustomerForm.vue";
+  import { decodeHandler } from '@/shared/decode_handler';
 
-const route = useRoute();
-const editFormData = reactive({});
+  const route = useRoute();
+  const customer = ref(null);
 
-onMounted(async () => {
-  editFormData.customer = await decodeHandler(route.params.customer);
-});
+  onMounted(async () => {
+    const customerParams  = await decodeHandler(route.params.customer);
+    customer.value = new Customer(customerParams);
+  });
 </script>

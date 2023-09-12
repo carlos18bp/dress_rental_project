@@ -1,44 +1,45 @@
 <template>
  <div class="container mt-5">
    <h1>Detalle del Cliente:</h1>
-   <div v-if="detailCustomer.customer" class="row mt-5">
+   <div v-if="detail.customer" class="row mt-5">
     <div class="col-6">
        <h2>Numero de Cedula:</h2>
-       <p>{{ detailCustomer.customer.identification }}</p>
+       <p>{{ detail.customer.identification }}</p>
      </div>
      <div class="col-6">
        <h2>Nombre:</h2>
-       <p>{{ detailCustomer.customer.firstName }}</p>
+       <p>{{ detail.customer.firstName }}</p>
      </div>
      <div class="col-6">
        <h2>Apellido:</h2>
-       <p>{{ detailCustomer.customer.lastName }}</p>
+       <p>{{ detail.customer.lastName }}</p>
      </div>
      <div class="col-6">
        <h2>Correo Electronico:</h2>
-       <p>{{ detailCustomer.customer.email }}</p>
+       <p>{{ detail.customer.email }}</p>
      </div>
      <div class="col-6">
        <h2>Numero de contacto:</h2>
-       <p>{{ detailCustomer.customer.contact }}</p>
+       <p>{{ detail.customer.contact }}</p>
      </div>
      <div class="col-6">
        <h2>Numero de contacto secundario:</h2>
-       <p v-if="detailCustomer.customer.secondContact">{{ detailCustomer.customer.secondContact }}</p>
+       <p v-if="detail.customer.secondContact">{{ detail.customer.secondContact }}</p>
        <p v-else>No registrado</p>
      </div>
      <div class="col-6">
        <h2>Direccion:</h2>
-       <p v-if="detailCustomer.customer.address">{{ detailCustomer.customer.address }}</p>
+       <p v-if="detail.customer.address">{{ detail.customer.address }}</p>
        <p v-else>No registrado</p>
      </div>
    </div>
-   <div v-if="detailCustomer.customer && detailCustomer.customer.sales.length > 0">
+   <div v-if="detail.customer && detail.customer.invoices.length > 0">
      <h2>Lista de Ventas/Alquileres:</h2>
-     <SaleTable
-      :sales="detailCustomer.customer.sales"
+     <InvoiceTable
+      :invoices="detail.customer.invoices"
+      :customerIdentificacion="detail.customer.identification"
      >
-     </SaleTable> 
+     </InvoiceTable> 
    </div>
    <div v-else>
      <h2>Lista de Ventas/Alquileres:</h2>
@@ -53,16 +54,19 @@
 <script setup>
  import { onMounted, reactive } from "vue";
  import { useRoute } from "vue-router";
- import SaleTable from '@/components/sale/SaleTable.vue';
+ import InvoiceTable from '@/components/invoice/InvoiceTable.vue';
  import { decodeHandler } from '@/shared/decode_handler';
 
  const route = useRoute();
- const detailCustomer = reactive({});
+ const detail = reactive({});
 
  onMounted(async () => {
-   detailCustomer.customer = await decodeHandler(route.params.customer);
+   detail.customer = await decodeHandler(route.params.customer);
  });
 
+/**
+ * Return to the previous page.
+ */
  const goBack = () => {
    window.history.back();
  };

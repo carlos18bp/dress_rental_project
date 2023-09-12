@@ -5,7 +5,7 @@
       <RouterLink 
         :to="{ name: 'create_product' }" 
         class="btn btn-primary btn-lg">
-        Crear Nuevo Producto
+        Crear Producto
       </RouterLink>
     </div>
     
@@ -36,11 +36,11 @@
         <div class="col form-check">
           <input class="form-check-input" 
                  type="radio" 
-                 name="saleProducts" 
-                 id="saleProducts"  
-                 @change="listSaleProducts"
-                 :checked="isSaleProductsChecked">
-          <label class="form-check-label" for="saleProducts">
+                 name="invoiceProducts" 
+                 id="invoiceProducts"  
+                 @change="listInvoiceProducts"
+                 :checked="isInvoiceProductsChecked">
+          <label class="form-check-label" for="invoiceProducts">
             <b>Listar productos Vendidos</b>
           </label>
         </div>
@@ -111,7 +111,7 @@
   
   const isAllProductsChecked = ref(true);
   const isAvailableProductsChecked = ref(false);
-  const isSaleProductsChecked = ref(false);
+  const isInvoiceProductsChecked = ref(false);
   const isRentalProductsChecked = ref(false);
 
   const searchReference = ref('');
@@ -122,7 +122,7 @@
   watchEffect(async () => await store.fetchProductsData());
 
   /**
-   * 
+   * Fetch and update product data.
    */
   async function fetchProducts() {
     await store.fetchCategoriesData();
@@ -133,35 +133,39 @@
   }
 
   /**
-   * 
+   * Select product list based on a filter defined.
    */
   function selectList() {
     if (isAllProductsChecked.value) listAllProducts();
     if (isAvailableProductsChecked.value) listAvailableProducts();
-    if (isSaleProductsChecked.value) listSaleProducts();
+    if (isInvoiceProductsChecked.value) listInvoiceProducts();
     if (isRentalProductsChecked.value) listRentalProducts();
   }
 
   /**
-   * 
+   * Filter by product reference.
+   * @param {array} products - Product array.
+   * @return {array} - Filter products by reference.
    */
   function filterByProduct(products) {
-    return products.filter(item => item.reference.includes(searchReference.value));
+    return products.filter(product => product.reference.includes(searchReference.value));
   }
 
   /**
-   * 
+   * Filter products by category.
+   * @param {array} products - Product array.
+   * @return {array} - Filter products by category type.
    */
   function filterByCategory(products) {
     if (searchCategoryType.value && searchCategoryType.value !== 'Todas') {
-      return products.filter(item => item.categoryType === searchCategoryType.value);
+      return products.filter(product => product.categoryType === searchCategoryType.value);
     } else {
       return products;
     }
   }
 
   /**
-   * 
+   * List all products.
    */
   function listAllProducts() {
     products.value = filterByCategory(filterByProduct(store.products));
@@ -169,7 +173,7 @@
   }
 
   /**
-   * 
+   * List available products.
    */
   function listAvailableProducts() {
     products.value = filterByCategory(filterByProduct(store.filterAvailableProducts));
@@ -177,15 +181,15 @@
   }
 
   /**
-   * 
+   * List sold products.
    */
-  function listSaleProducts() {
-    products.value = filterByCategory(filterByProduct(store.filterSaleProducts));
-    setSingleChecked(isSaleProductsChecked);
+  function listInvoiceProducts() {
+    products.value = filterByCategory(filterByProduct(store.filterInvoiceProducts));
+    setSingleChecked(isInvoiceProductsChecked);
   }
 
   /**
-   * 
+   * List rental products.
    */
   function listRentalProducts() {
     products.value = filterByCategory(filterByProduct(store.filterRentalProducts));
@@ -193,14 +197,14 @@
   }
 
   /**
-   * 
-   * @param {*} productCheckedToSet 
+   * Set flag to define the correct product list.
+   * @param {boolean} productCheckedToSet - Flag list.
    */
   function setSingleChecked(productCheckedToSet) {
     const productsChecked = [
       isAllProductsChecked,
       isAvailableProductsChecked,
-      isSaleProductsChecked,
+      isInvoiceProductsChecked,
       isRentalProductsChecked
     ];
 

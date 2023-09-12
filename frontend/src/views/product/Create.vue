@@ -1,6 +1,6 @@
 <template>
   <ProductForm
-    :productformData="productformData"
+    :productformData="product"
     action="create"
     model="product"
   >
@@ -9,11 +9,12 @@
   
 <script setup>
   import { reactive } from "vue";
+  import Product from '@/models/customer';
   import ProductForm from "@/components/product/ProductForm.vue";
 
-  const productformData = reactive({
-    title: "",
-    reference: "",
-    category: "",
-  });
+  const product = reactive( new Product({
+    title: '',
+    reference: '',
+    category: '',
+  }));
 </script>

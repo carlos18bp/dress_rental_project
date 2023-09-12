@@ -15,65 +15,156 @@ export const useDressRentalStore = defineStore("dress_rental", {
     areUpdateCustomers: false,
     products: [],
     areUpdateProducts: false,
-    sales: [],
-    areUpdateSales: false,
+    invoices: [],
+    areUpdateInvoices: false,
   }),
   getters: {
+    /**
+     * Filter by customer identification.
+     * @param {object} state - State. 
+     * @returns {array} - Customer identification occurrences.
+     */
     filterByIdentification: (state) => (query) => {
       return state.customers.filter(customer => {
         return customer.identification.toString().includes(query)
       });
     },
+    /**
+     * Filter by Customer first or last name.
+     * @param {object} state - State. 
+     * @returns {array} - Customer first or last name occurrences.
+     */
     filterByFirstOrLastName: (state) => (query) => {
       return state.customers.filter(customer => {
         return customer.firstName.toLowerCase().includes(query) || 
                customer.lastName.toLowerCase().includes(query);
       });
     },
+    /**
+     * Filter by available products.
+     * @param {object} state - State. 
+     * @returns {array} - Available products occurrences.
+     */
     filterAvailableProducts: (state) => {
       return state.products.filter(product => !product.hasSale);
     },
-    filterSaleProducts: (state) => {
+    /**
+     * Filter available products by an invoice.
+     * @param {object} state - State. 
+     * @returns {array} - Available products by an invoice.
+     */
+    filterAvailableProductsByInvoice: (state) => (invoice) => {
+      return state.products.filter(product => product.hasRental || 
+        invoice.productIds.includes(product.id));
+    },
+    /**
+     * Filter by invoice products
+     * @param {object} state - State. 
+     * @returns {array} - Invoice products occurrences.
+     */
+    filterInvoiceProducts: (state) => {
       return state.products.filter(product => product.hasSale);
     },
+    /**
+     * Filter by rental products.
+     * @param {object} state - State. 
+     * @returns {array} - Rental products occurrences.
+     */
     filterRentalProducts: (state) => {
       return state.products.filter(product => product.hasRental);
     },
-    filterSalesByTypeSale: (state) => {
-      return state.sales.filter(sale => sale.type === 'Venta');
+    /**
+     * Filter by invoice type.
+     * @param {object} state - State. 
+     * @returns {array} - Invoices sale type occurrences.
+     */
+    filterInvoicesByTypeInvoice: (state) => {
+      return state.invoices.filter(invoice => invoice.type === 'Venta');
     },
-    filterSalesByTypeRental: (state) => {
-      return state.sales.filter(sale => sale.type === 'Alquiler');
+    /**
+     * Filter by invoice rental.
+     * @param {object} state - State. 
+     * @returns {array} - Invoice rental type occurrences.
+     */
+    filterInvoicesByTypeRental: (state) => {
+      return state.invoices.filter(invoice => invoice.type === 'Alquiler');
     },
-    filterPendingDeliverySale: (state) => {
-      return state.sales.filter(sale => sale.type === 'Venta' && 
-                                        !sale.isProductDelivered);
+    /**
+     * Filter by pending delivery invoice type.
+     * @param {object} state - State. 
+     * @returns {array} - Pending delivery invoice type occurrences.
+     */
+    filterPendingDeliveryInvoice: (state) => {
+      return state.invoices.filter(invoice => invoice.type === 'Venta' && 
+                                              !invoice.isProductDelivered);
     },
+    /**
+     * Filter by pending delivery rental.
+     * @param {object} state - State. 
+     * @returns {array} - Pending delivery rental type occurrences.
+     */
     filterPendingDeliveryRental: (state) => {
-      return state.sales.filter(sale => sale.type === 'Alquiler' && 
-                                        !sale.isProductDelivered);
+      return state.invoices.filter(invoice => invoice.type === 'Alquiler' && 
+                                              !invoice.isProductDelivered);
     },
-    filterExpiredDeliverySales: (state) => {
-      return state.sales.filter(sale => sale.type === 'Alquiler' &&
-                                        sale.isProductReturn === false && 
-                                        new Date(sale.returnDate) < new Date());
+    /**
+     * Filter by return expired rental type.
+     * @param {object} state - State. 
+     * @returns {array} - Return expired rental type occurrences.
+     */
+    filterReturnExpiredRental: (state) => {
+      return state.invoices.filter(invoice => invoice.type === 'Alquiler' &&
+                                              invoice.isProductReturn === false && 
+                                              new Date(invoice.returnDate) < new Date());
     },
+    /**
+     * Get product by id.
+     * @param {object} state - State. 
+     * @returns {array} - product by id occurrence.
+     */
+    productById: (state) => (productId) => {
+      return state.products.find(product => product.id === productId);
+    },
+    /**
+     * Find invoice id.
+     * @param {integer} invoiceId - Invoice id.
+     * @returns {integer} - Invoice id.
+     */
+    invoiceById: (state) => (invoiceId) => {
+      return state.invoices.find(invoice => invoice.id === invoiceId);
+    }
   },
   actions: {
+    /**
+     * Fetch data from backend.
+     */
     async init() {
       if(!this.areUpdateCustomers) this.fetchCustomersData();
       if(!this.areUpdateCategories) this.fetchCategoriesData();
       if(!this.areUpdateProducts) this.fetchProductsData();
-      if(!this.areUpdateSales) this.fetchSalesData();
+      if(!this.areUpdateInvoices) this.fetchInvoicesData();
     },
+    /**
+     * Call creation request.
+     * @param {object} formData - Form data.
+     * @param {string} createModel - model reference.
+     */
     async createRequest(formData, createModel) {
       await create_request(`/api/create_${createModel}/`, JSON.stringify(formData));
       this.updateData(createModel);
     },
+    /**
+     * Call edit request.
+     * @param {object} formData - Form data.
+     * @param {string} editModel - model reference.
+     */
     async editRequest(formData, editModel) {
       await edit_request(`/api/edit_${editModel}/`, JSON.stringify(formData));
       this.updateData(editModel);
     },
+    /**
+     * Fetch categories from backend.
+     */
     async fetchCategoriesData() {
       if(this.areUpdateCategories) return;
 
@@ -88,6 +179,9 @@ export const useDressRentalStore = defineStore("dress_rental", {
       }
       this.areUpdateCategories = true;
     },
+    /**
+     * Fetch customer from backend.
+     */
     async fetchCustomersData() {
       if(this.areUpdateCustomers) return;
 
@@ -95,6 +189,9 @@ export const useDressRentalStore = defineStore("dress_rental", {
       this.customers = JSON.parse(jsonData) ?? [];
       this.areUpdateCustomers = true;
     },
+    /**
+     * Fetch products from backend.
+     */
     async fetchProductsData() {
       if(this.areUpdateProducts) return;
 
@@ -102,17 +199,27 @@ export const useDressRentalStore = defineStore("dress_rental", {
       this.products = JSON.parse(jsonData) ?? [];
       this.areUpdateProducts = true;
     },
-    async fetchSalesData() {
-      if(this.areUpdateSales) return;
+    /**
+     * Fetch invoices from backend.
+     */
+    async fetchInvoicesData() {
+      if(this.areUpdateInvoices) return;
 
-      const jsonData = await get_request("api/list_sales/");
-      this.sales =  JSON.parse(jsonData) ?? [];
-      this.areUpdateSales = true;
+      const jsonData = await get_request("api/list_invoices/");
+      this.invoices =  JSON.parse(jsonData) ?? [];
+      this.areUpdateInvoices = true;
     },
+    /**
+     * Delete request.
+     */
     async delete(id, deleteModel) {
       await delete_request(`api/delete_${deleteModel}/${id}/`);
       this.updateData(deleteModel);
     },
+    /**
+     * Update state based on model reference.
+     * @param {string} updateModel - model reference.
+     */
     async updateData(updateModel) {
       switch (updateModel) {
         case "customer":
@@ -121,16 +228,20 @@ export const useDressRentalStore = defineStore("dress_rental", {
         case "product":
           this.areUpdateProducts = false;
           break;
-        case "sale":
-          this.areUpdateSales = false;
+        case "invoice":
+          this.areUpdateInvoices = false;
           break;
         default:
           throw new Error(`Unsupported model: ${updateModel}`);
       }
     },
-    async saleFinished(saleId) {
-      await update_request(`/api/close_sale/${saleId}/`);
-      this.updateData('sale');
+    /**
+     * Define invoice as finished.
+     * @param {integer} invoiceId - Invoice id.
+     */
+    async invoiceFinished(invoiceId) {
+      await update_request(`/api/close_invoice/${invoiceId}/`);
+      this.updateData('invoice');
     },
   },
 });

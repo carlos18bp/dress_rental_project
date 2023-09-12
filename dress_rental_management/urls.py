@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dress_rental.views import category, customer, product, sale
+from dress_rental.views import category, customer, invoice, product 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,10 +27,10 @@ urlpatterns = [
     path('edit_product/', product.edit, name='edit_product'),
     path('delete_product/<int:product_id>/', product.delete, name='delete_product'),
     path('list_products/', product.index, name='list_products'),
-    path('create_sale/', sale.create, name='create_sale'),
-    path('edit_sale/', sale.edit, name='edit_sale'),
-    path('delete_sale/<int:sale_id>/', sale.delete, name='delete_sale'),
-    path('list_sales/', sale.index, name='list_sales'),
-    path('close_sale/<int:sale_id>/', sale.close_sale, name='close_sale'),
+    path('create_invoice/', invoice.create, name='create_invoice'),
+    path('edit_invoice/', invoice.edit, name='edit_invoice'),
+    path('delete_invoice/<int:invoice_id>/', invoice.delete, name='delete_invoice'),
+    path('list_invoices/', invoice.index, name='list_invoices'),
+    path('close_invoice/<int:invoice_id>/', invoice.close_invoice, name='close_invoice'),
     path('list_categories/', category.index, name='list_categories'),  
 ]

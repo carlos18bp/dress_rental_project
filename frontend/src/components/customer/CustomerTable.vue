@@ -28,7 +28,7 @@
             Detalle
           </router-link>
           <router-link 
-            :to="{ name: 'create_sale', 
+            :to="{ name: 'create_invoice', 
                   params: { customer_id: customer.id } }"
             class="btn btn-primary">
             Crear Venta
@@ -58,7 +58,9 @@
   });
 
   /**
-   * 
+   * Check any invoice or rental.
+   * @param {object} customer - json customer.
+   * @returns {boolean} - invoice has any sale or rental state.
    */
    function hasSaleOrRental(customer) {
     return customer.hasSale || customer.hasRental

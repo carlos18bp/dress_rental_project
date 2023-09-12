@@ -1,6 +1,6 @@
 <template>
   <ProductForm
-    :productformData="editFormData.product"
+    :productformData="product"
     action="edit"
     model="product"
   >
@@ -8,16 +8,17 @@
 </template>
 
 <script setup>
-  import { onMounted, reactive } from "vue";
+  import { onMounted, ref } from "vue";
   import { useRoute } from "vue-router";
+  import Product from '@/models/product';
   import ProductForm from "@/components/product/ProductForm.vue";
+  import { decodeHandler } from '@/shared/decode_handler';
 
   const route = useRoute();
-  const editFormData = reactive({});
+  const product = ref(null);
 
   onMounted(async () => {
-    const encodedProduct = route.params.product;
-    const decodedProduct = await JSON.parse(decodeURIComponent(encodedProduct));
-    editFormData.product = decodedProduct;
+    const productParams  = await decodeHandler(route.params.product);
+    product.value = new Product(productParams);
   });
 </script>

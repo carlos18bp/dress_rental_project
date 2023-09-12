@@ -1,42 +1,45 @@
 import json
 
-def products_with_categories_and_sales_serializer(products):
+def products_with_categories_and_invoices_serializer(products):
+    """
+    Product serializer.
+    """
     products_serialized = []
 
     for product in products:
-        product_data = {    
+        product_data = {
             'id': product.id,
             'title': product.title,
             'reference': product.reference,
             'categoryType': product.category.type,
             'categoryId': product.category.id,
-            'sales': _get_sales_with_customer(product.sales.all()),
-            'hasSale': True if product.sales.filter(type='sale').exists() else False,
-            'hasRental': True if product.sales.filter(type='rental').exists() else False,
+            'invoices': _get_invoices_with_customer(product.invoices.all()),
+            'hasSale': True if product.invoices.filter(type='sale').exists() else False,
+            'hasRental': True if product.invoices.filter(type='rental').exists() else False,
         }
         products_serialized.append(product_data)
 
     return json.dumps(products_serialized)
 
-def _get_sales_with_customer(sales):
-    sales_serialized = []
+def _get_invoices_with_customer(invoices):
+    invoices_serialized = []
 
-    for sale in sales:
-        sale_data = {        
-            'id': sale.id,
-            'type': 'Venta' if sale.type == 'sale' else 'Alquiler',
-            'price': sale.price,
-            'advancePayment': sale.advance_payment,
-            'advancePaymentDate': sale.advance_payment_date.strftime('%Y-%m-%d'),
-            'isProductDelivered': sale.is_product_delivered,
-            'deliveryDate': sale.delivery_date.strftime('%Y-%m-%d'),
-            'returnDate': sale.return_date.strftime('%Y-%m-%d') if sale.return_date else '',
-            'isProductReturn': sale.is_product_return,           
+    for invoice in invoices:
+        invoice_data = {
+            'id': invoice.id,
+            'type': 'Venta' if invoice.type == 'sale' else 'Alquiler',
+            'price': invoice.price,
+            'advancePayment': invoice.advance_payment,
+            'advancePaymentDate': invoice.advance_payment_date.strftime('%Y-%m-%d'),
+            'isProductDelivered': invoice.is_product_delivered,
+            'deliveryDate': invoice.delivery_date.strftime('%Y-%m-%d'),
+            'returnDate': invoice.return_date.strftime('%Y-%m-%d') if invoice.return_date else '',
+            'isProductReturn': invoice.is_product_return,
             'customer': {
-                'id': sale.customer.id,
-                'identification': sale.customer.identification,
+                'id': invoice.customer.id,
+                'identification': invoice.customer.identification,
             },
         }
-        sales_serialized.append(sale_data)
+        invoices_serialized.append(invoice_data)
 
-    return sales_serialized
+    return invoices_serialized

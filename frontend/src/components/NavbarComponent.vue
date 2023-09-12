@@ -51,8 +51,8 @@
             </li>
             <li class="nav-item">
               <a class="nav-link fs-3">
-                <RouterLink :to="{ name: 'list_sales' }" class="custom-link">
-                  Ventas
+                <RouterLink :to="{ name: 'list_invoices' }" class="custom-link">
+                  Facturas
                 </RouterLink>
               </a>
             </li>

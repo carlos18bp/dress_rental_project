@@ -1,6 +1,6 @@
 <template>
   <CustomerForm 
-    :customerformData=customerformData 
+    :customerformData=customer 
     action="create" 
     model="customer">
   </CustomerForm>
@@ -8,9 +8,10 @@
 
 <script setup>
   import { reactive } from 'vue';
+  import Customer from '@/models/customer';
   import CustomerForm from '@/components/customer/CustomerForm.vue';
 
-  const customerformData = reactive({
+  const customer = reactive(new Customer({
     identification: '',
     firstName: '',
     lastName: '',
@@ -18,5 +19,5 @@
     contact: '',
     secondContact: '',
     address: '',
-  });
+  }));
 </script>
