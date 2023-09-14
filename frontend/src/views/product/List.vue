@@ -2,11 +2,15 @@
   <div class="container mt-5">
     <div class="d-flex justify-content-between">
       <h1>Lista de Productos:</h1>
-      <RouterLink 
-        :to="{ name: 'create_product' }" 
-        class="btn btn-primary btn-lg">
-        Crear Producto
-      </RouterLink>
+      <div>
+        <RouterLink 
+          :to="{ name: 'create_product' }" 
+          class="btn btn-primary btn-lg">
+          Crear Producto
+        </RouterLink>
+        <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>
+        <button @click="report" class="btn btn-success btn-lg">Descargar Reporte</button>
+      </div>
     </div>
     
     <div class="container mt-5 ml-1">
@@ -103,6 +107,7 @@
   import { ref, onMounted, watchEffect } from 'vue';
   import ProductTable from '@/components/product/ProductTable.vue';
   import { useDressRentalStore } from '@/stores/dress_rental';
+  import { downloadReport } from '@/shared/download_report';
  
 
   const store = useDressRentalStore();
@@ -212,4 +217,17 @@
       checked.value = checked === productCheckedToSet ? true : false;
     }
   }
+
+  /**
+   * Clean filters.
+   */
+   function cleanFilters() {
+    searchReference.value = '';
+    searchReference.value = '';
+  }
+
+  /**
+   * Download report by products.
+   */
+   const report = () => downloadReport(products.value, 'product_report');
 </script>

@@ -2,11 +2,15 @@
   <div class="container mt-5">
     <div class="d-flex justify-content-between">
       <h1>Lista de Facturas:</h1>
-      <router-link  
-        :to="{ name: 'create_invoice' }" 
-        class="btn btn-primary btn-lg">
-        Crear Factura
-      </router-link>
+      <div>
+        <router-link  
+          :to="{ name: 'create_invoice' }" 
+          class="btn btn-primary btn-lg">
+          Crear Factura
+        </router-link>
+        <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>
+        <button @click="report" class="btn btn-success btn-lg">Descargar Reporte</button>
+      </div>
     </div>
 
     <div class="container mt-4">
@@ -146,6 +150,7 @@
   import { onMounted, ref, watchEffect } from 'vue';
   import InvoiceTable from '@/components/invoice/InvoiceTable.vue'; 
   import { useDressRentalStore } from '@/stores/dress_rental';
+  import { downloadReport } from '@/shared/download_report';
 
   const store = useDressRentalStore();
   const invoices = ref([]);
@@ -332,4 +337,19 @@
       checked.value = checked === invoiceCheckedToSet ? true : false;
     }
   }
+
+  /**
+   * Clean filters.
+   */
+   function cleanFilters() {
+    startDate.value = '';
+    endDate.value = '';
+    searchCustomer.value = '';
+    searchCustomer.value = '';
+  }
+
+  /**
+   * Download report by invoices.
+   */
+   const report = () => downloadReport(invoices.value, 'invoice_report');
 </script>

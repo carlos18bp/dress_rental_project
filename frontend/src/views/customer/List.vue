@@ -2,9 +2,13 @@
   <div class="container mt-5">
     <div class="d-flex justify-content-between">
       <h1>Lista de Clientes:</h1>
-      <router-link  :to="{ name: 'create_customer' }" class="btn btn-primary btn-lg">
-        Crear Cliente
-      </router-link>
+      <div>
+        <router-link  :to="{ name: 'create_customer' }" class="btn btn-primary btn-lg m-3">
+          Crear Cliente
+        </router-link>
+        <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>
+        <button @click="report" class="btn btn-success btn-lg">Descargar Reporte</button>
+    </div>
     </div>
     <div class="container mt-4 p-0">
       <div class="row">
@@ -40,7 +44,8 @@
 </template>
 
 <script setup>
-  import { RouterLink } from "vue-router";
+  import { downloadReport } from '@/shared/download_report';
+  import { RouterLink } from "vue-router";  
   import { ref, onMounted, watchEffect } from 'vue';
   import CustomerTable from '@/components/customer/CustomerTable.vue';
   import { useDressRentalStore } from '@/stores/dress_rental';
@@ -78,4 +83,17 @@
     const query = searchFirstOrLastName.value.toString().toLowerCase();
     customers.value = store.filterByFirstOrLastName(query);
   }
+
+  /**
+   * Clean filters.
+   */
+  function cleanFilters() {
+    searchIdentification.value = '';
+    searchFirstOrLastName.value = '';
+  }
+
+  /**
+   * Download report by customers.
+   */
+   const report = () => downloadReport(customers.value, 'customer_report');
 </script>
