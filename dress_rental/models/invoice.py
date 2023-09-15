@@ -40,7 +40,6 @@ class Invoice(models.Model):
 
     delivery_date = models.DateField()
     is_product_delivered = models.BooleanField(default=False)
-
     
     return_date = models.DateField(blank=True, null=True)
     is_product_return = models.BooleanField(default=False)

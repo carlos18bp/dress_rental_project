@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from dress_rental.models import Category, Product
-from dress_rental.serializers.product_serializer import products_with_categories_and_invoices_serializer
+from dress_rental.serializers.product_serializer import products_serializer
 import json
 
 def index(request):
@@ -16,7 +16,7 @@ def index(request):
     """
     products = Product.objects.all().order_by('-id')
     
-    return JsonResponse(products_with_categories_and_invoices_serializer(products), safe=False)
+    return JsonResponse(products_serializer(products), safe=False)
 
 def create(request):
     """
@@ -65,7 +65,7 @@ def edit(request):
 
             product.save()        
 
-            return JsonResponse({'message': 'Record Edited successfully'}, status=200)
+            return JsonResponse({'message': 'Record edited successfully'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)   
 

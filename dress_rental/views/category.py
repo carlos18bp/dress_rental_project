@@ -15,4 +15,4 @@ def index(request):
     categories = Category.objects.all()
     categories_serialized = serializers.serialize('json', categories)
     
-    return JsonResponse(categories_serialized, safe=False)
+    return JsonResponse(categories_serialized, safe=False, status=200)

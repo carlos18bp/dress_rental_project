@@ -73,7 +73,7 @@ def edit(request):
 
             customer.save()        
 
-            return JsonResponse({'message': 'Record Edited successfully'}, status=200)   
+            return JsonResponse({'message': 'Record edited successfully'}, status=200)   
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)  
 

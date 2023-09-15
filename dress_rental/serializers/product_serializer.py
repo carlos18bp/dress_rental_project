@@ -1,6 +1,6 @@
 import json
 
-def products_with_categories_and_invoices_serializer(products):
+def products_serializer(products):
     """
     Product serializer.
     """

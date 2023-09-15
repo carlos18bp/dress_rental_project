@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from dress_rental.models import Customer, Product, Invoice
 from datetime import datetime
-from dress_rental.serializers.invoice_serializer import invoices_with_customers_and_products_serializer
+from dress_rental.serializers.invoice_serializer import invoices_serializer
 import json
 
 def index(request):
@@ -17,7 +17,7 @@ def index(request):
     """
     invoices = Invoice.objects.prefetch_related('customer', 'products').order_by('-id')
 
-    return JsonResponse(invoices_with_customers_and_products_serializer(invoices), safe=False)
+    return JsonResponse(invoices_serializer(invoices), safe=False)
 
 def create(request):
     """
@@ -91,7 +91,7 @@ def edit(request):
 
             invoice.save()
 
-            return JsonResponse({'message': 'Record Edited successfully'}, status=200)
+            return JsonResponse({'message': 'Record edited successfully'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
      
