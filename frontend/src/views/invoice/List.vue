@@ -149,10 +149,10 @@
   import { RouterLink } from "vue-router";
   import { onMounted, ref, watchEffect } from 'vue';
   import InvoiceTable from '@/components/invoice/InvoiceTable.vue'; 
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { useInvoiceStore } from '@/stores/invoice';
   import { downloadReport } from '@/shared/download_report';
 
-  const store = useDressRentalStore();
+  const invoiceStore = useInvoiceStore();
   const invoices = ref([]);
 
   const isAllInvoicesChecked = ref(true);
@@ -176,7 +176,7 @@
    * Fetch and update invoice data.
    */
    async function fetchInvoices() {
-    await store.fetchInvoicesData();
+    await invoiceStore.fetchInvoicesData();
     selectList();
    }
 
@@ -259,7 +259,7 @@
   function listAllInvoices() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.invoices)));
+        filterByDate(invoiceStore.invoices)));
 
     setSingleChecked(isAllInvoicesChecked);
   }
@@ -270,7 +270,7 @@
   function listInvoicesByTypeInvoice() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.filterInvoicesByTypeInvoice)));
+        filterByDate(invoiceStore.filterInvoicesByTypeInvoice)));
 
     setSingleChecked(isInvoicesByTypeInvoiceChecked);
   }
@@ -281,7 +281,7 @@
   function listInvoicesByTypeRental() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.filterInvoicesByTypeRental)));
+        filterByDate(invoiceStore.filterInvoicesByTypeRental)));
 
     setSingleChecked(isInvoicesByTypeRentalChecked);
   }
@@ -292,7 +292,7 @@
   function listPendingDeliveryInvoices() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.filterPendingDeliveryInvoice)));
+        filterByDate(invoiceStore.filterPendingDeliveryInvoice)));
 
     setSingleChecked(isPendingDeliveryInvoicesChecked);
   }
@@ -303,7 +303,7 @@
   function listPendingDeliveryRental() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.filterPendingDeliveryRental)));
+        filterByDate(invoiceStore.filterPendingDeliveryRental)));
 
     setSingleChecked(isPendingDeliveryRentalChecked);
   }
@@ -314,7 +314,7 @@
   function listExpiredInvoices() {
     invoices.value = filterByProduct(
       filterByCustomer(
-        filterByDate(store.filterReturnExpiredRental)));
+        filterByDate(invoiceStore.filterReturnExpiredRental)));
 
     setSingleChecked(isExpiredInvoicesChecked);
   }
@@ -341,11 +341,12 @@
   /**
    * Clean filters.
    */
-   function cleanFilters() {
+   async function cleanFilters() {
     startDate.value = '';
     endDate.value = '';
     searchCustomer.value = '';
-    searchCustomer.value = '';
+    searchProduct.value = '';
+    await fetchInvoices();
   }
 
   /**

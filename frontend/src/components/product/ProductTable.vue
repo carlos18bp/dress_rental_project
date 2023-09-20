@@ -62,9 +62,9 @@
 
 <script setup>
    import { deleteHandler } from '@/shared/delete_handler';
-   import { useDressRentalStore } from '@/stores/dress_rental';
+   import { useProductStore } from '@/stores/product';
 
-  const store = useDressRentalStore();
+  const productStore = useProductStore();
 
   const props = defineProps({
     products: Object,
@@ -76,7 +76,7 @@
    * @returns {object} - Encode product.
    */
    function encodeProduct(productId) {
-    return encodeURIComponent(JSON.stringify(store.productById(productId)));
+    return encodeURIComponent(JSON.stringify(productStore.productById(productId)));
   }
 
   /**

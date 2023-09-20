@@ -48,9 +48,9 @@
   import { RouterLink } from "vue-router";  
   import { ref, onMounted, watchEffect } from 'vue';
   import CustomerTable from '@/components/customer/CustomerTable.vue';
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { useCustomerStore } from '@/stores/customer';
 
-  const store = useDressRentalStore();
+  const customerStore = useCustomerStore();
   const customers = ref([]);
   const searchIdentification = ref('');
   const searchFirstOrLastName = ref('');
@@ -62,8 +62,8 @@
    * Fetch and update customer data.
    */
   async function fetchCustomers() {
-    await store.fetchCustomersData();
-    customers.value = store.customers;
+    await customerStore.fetchCustomersData();
+    customers.value = customerStore.customers;
   }
 
   /**
@@ -72,7 +72,7 @@
   function filterByIdentification() {
     searchFirstOrLastName.value = '';
     const query = searchIdentification.value.toString();
-    customers.value = store.filterByIdentification(query);
+    customers.value = customerStore.filterByIdentification(query);
   }
 
   /**
@@ -81,15 +81,16 @@
   function filterByFirstOrLastName() {
     searchIdentification.value = '';
     const query = searchFirstOrLastName.value.toString().toLowerCase();
-    customers.value = store.filterByFirstOrLastName(query);
+    customers.value = customerStore.filterByFirstOrLastName(query);
   }
 
   /**
    * Clean filters.
    */
-  function cleanFilters() {
+   async function cleanFilters() {
     searchIdentification.value = '';
     searchFirstOrLastName.value = '';
+    await fetchCustomers();
   }
 
   /**

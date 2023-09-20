@@ -12,7 +12,7 @@
             required>
             <option disabled>Seleccionar una opción</option>
             <option
-              v-for="customer in store.customers"
+              v-for="customer in productStore.customers"
               :key="customer.id"
               :value="customer.id">
               {{ customer.firstName }} {{ customer.lastName }} ({{
@@ -184,11 +184,11 @@
   import { useRouter } from "vue-router";
   import Invoice from '@/models/invoice';
   import { submitHandler } from "@/shared/submit_handler";
-  import { computed, onMounted, ref, watchEffect } from "vue";
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { computed, ref, watchEffect } from "vue";
+  import { useProductStore } from '@/stores/product';
 
   const router = useRouter();
-  const store = useDressRentalStore();
+  const productStore = useProductStore();
   const invoice = ref(null);
 
   const props = defineProps({
@@ -209,7 +209,7 @@
    * @return {array} - Available product array.
    */
    function filterAvailableProducts() {
-    return store.filterAvailableProductsByInvoice(invoice.value);
+    return productStore.filterAvailableProductsByInvoice(invoice.value);
   }
 
   /**

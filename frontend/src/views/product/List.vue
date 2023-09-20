@@ -106,11 +106,12 @@
   import { RouterLink } from "vue-router";
   import { ref, onMounted, watchEffect } from 'vue';
   import ProductTable from '@/components/product/ProductTable.vue';
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { useProductStore } from '@/stores/product';
+  import { useCategoryStore } from '@/stores/category';
   import { downloadReport } from '@/shared/download_report';
  
-
-  const store = useDressRentalStore();
+  const productStore = useProductStore();
+  const categoryStore = useCategoryStore();
   const categories = ref([]);
   const products = ref([]);
   
@@ -124,16 +125,16 @@
 
   onMounted(async () => fetchProducts());
 
-  watchEffect(async () => await store.fetchProductsData());
+  watchEffect(async () => await productStore.fetchProductsData());
 
   /**
    * Fetch and update product data.
    */
   async function fetchProducts() {
-    await store.fetchCategoriesData();
-    categories.value = store.categories;
+    await categoryStore.fetchCategoriesData();
+    categories.value = categoryStore.categories;
 
-    await store.fetchProductsData();
+    await productStore.fetchProductsData();
     selectList();
   }
 
@@ -173,7 +174,7 @@
    * List all products.
    */
   function listAllProducts() {
-    products.value = filterByCategory(filterByProduct(store.products));
+    products.value = filterByCategory(filterByProduct(productStore.products));
     setSingleChecked(isAllProductsChecked);
   }
 
@@ -181,7 +182,7 @@
    * List available products.
    */
   function listAvailableProducts() {
-    products.value = filterByCategory(filterByProduct(store.filterAvailableProducts));
+    products.value = filterByCategory(filterByProduct(productStore.filterAvailableProducts));
     setSingleChecked(isAvailableProductsChecked);
   }
 
@@ -189,7 +190,7 @@
    * List sold products.
    */
   function listInvoiceProducts() {
-    products.value = filterByCategory(filterByProduct(store.filterInvoiceProducts));
+    products.value = filterByCategory(filterByProduct(productStore.filterInvoiceProducts));
     setSingleChecked(isInvoiceProductsChecked);
   }
 
@@ -197,7 +198,7 @@
    * List rental products.
    */
   function listRentalProducts() {
-    products.value = filterByCategory(filterByProduct(store.filterRentalProducts));
+    products.value = filterByCategory(filterByProduct(productStore.filterRentalProducts));
     setSingleChecked(isRentalProductsChecked);
   }
 
@@ -221,9 +222,10 @@
   /**
    * Clean filters.
    */
-   function cleanFilters() {
+   async function cleanFilters() {
     searchReference.value = '';
     searchReference.value = '';
+    await productStore.fetchProductsData();
   }
 
   /**

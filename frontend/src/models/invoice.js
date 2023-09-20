@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useDressRentalStore } from '@/stores/dress_rental';
+import { useInvoiceStore } from '@/stores/invoice';
 
 /**
  * Class representing Invoice.
@@ -22,7 +22,7 @@ class Invoice {
     this.products = params.products;
     this.productIds = params.productIds;
 
-    this.store = useDressRentalStore();
+    this.invoiceStore = useInvoiceStore();
   }
 
   /**
@@ -63,7 +63,7 @@ class Invoice {
           this.returnDate = '';
       });
     } else {
-      this.store.invoices.forEach((invoice) => {
+      this.invoiceStore.invoices.forEach((invoice) => {
         invoice.products.forEach((product) => {
           this.productIds.forEach((productId) => {
             if (product.id === productId) {

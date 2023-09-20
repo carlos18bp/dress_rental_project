@@ -33,7 +33,7 @@
             required>
             <option disabled>Seleccionar una opción</option>
             <option
-              v-for="category in store.categories"
+              v-for="category in categoryStore.categories"
               :key="category.id"
               :value="category.id">
               {{ category.type }}
@@ -50,11 +50,11 @@
 </template>
   
 <script setup>
+  import { computed } from "vue";
   import { useRouter } from "vue-router";
   import { submitHandler } from "@/shared/submit_handler";
-  import { useDressRentalStore } from '@/stores/dress_rental';
-  import { computed } from "vue";
-
+  import { useCategoryStore } from '@/stores/category';
+ 
   const props = defineProps({
     action: String,
     productformData: Object,
@@ -62,7 +62,7 @@
   });
 
   const router = useRouter();
-  const store = useDressRentalStore();
+  const categoryStore = useCategoryStore();
 
   /**
    * Check action to define view title.

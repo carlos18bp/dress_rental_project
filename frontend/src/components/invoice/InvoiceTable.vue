@@ -80,9 +80,9 @@
 <script setup>
   import Swal from "sweetalert2";
   import { deleteHandler } from '@/shared/delete_handler';
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { useInvoiceStore } from '@/stores/invoice';
 
-  const store = useDressRentalStore();
+  const invoiceStore = useInvoiceStore();
 
   const props = defineProps({
     customerIdentificacion: Number,
@@ -95,7 +95,7 @@
    * @return {array} - Product array.
    */
   function getProducts(invoiceId) {
-    return store.invoiceById(invoiceId).products;
+    return invoiceStore.invoiceById(invoiceId).products;
   }
 
   /**
@@ -104,7 +104,7 @@
    * @returns {object} - Encode invoice.
    */
    function encodeProduct(invoiceId) {
-    return encodeURIComponent(JSON.stringify(store.invoiceById(invoiceId)));
+    return encodeURIComponent(JSON.stringify(invoiceStore.invoiceById(invoiceId)));
   }
 
   /**
@@ -164,7 +164,7 @@
    * @param {string} invoiceType - Invoice type.
    */
   function invoiceFinished(invoiceId, invoiceType) {
-    store.invoiceFinished(invoiceId);
+    invoiceStore.invoiceFinished(invoiceId);
 
     Swal.fire({
       icon: "success",

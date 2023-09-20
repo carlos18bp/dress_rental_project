@@ -5,11 +5,22 @@
 
 <script setup>    
   import { RouterView } from "vue-router";
-  import { onMounted, provide } from 'vue';
+  import { onMounted } from 'vue';
   import Header from "./views/layouts/Header.vue";
-  import { useDressRentalStore } from '@/stores/dress_rental';
+  import { useCategoryStore } from '@/stores/category';
+  import { useCustomerStore } from '@/stores/customer';
+  import { useInvoiceStore } from '@/stores/invoice';
+  import { useProductStore } from '@/stores/product';
   
-  const store = useDressRentalStore();
+  const categoryStore = useCategoryStore();
+  const customerStore = useCustomerStore();
+  const invoiceStore = useInvoiceStore();
+  const productStore = useProductStore();
 
-  onMounted(async () => await store.init());
+  onMounted(async () => {
+    await categoryStore.init();
+    await customerStore.init();
+    await invoiceStore.init();
+    await productStore.init();
+  });
 </script>
