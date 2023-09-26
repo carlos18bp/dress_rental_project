@@ -1,0 +1,66 @@
+[
+  {
+    "id": 84,
+    "type": "Venta",
+    "price": 916,
+    "advancePayment": 784,
+    "advancePaymentDate": "2023-10-07",
+    "deliveryDate": "2023-09-25",
+    "isProductDelivered": false,
+    "returnDate": "",
+    "isProductReturn": false,
+    "customer": {
+      "id": 89,
+      "identification": 1023468725,
+      "firstName": "Michael",
+      "lastName": "Smith",
+      "email": "danapatton@example.net",
+      "contact": "3019601679"
+    },
+    "customerId": 89,
+    "products": [
+      {
+        "id": 329,
+        "title": "spring",
+        "reference": "P-864",
+        "categoryType": "Primera comunión",
+        "categoryId": 73,
+        "hasSale": true,
+        "hasRental": false
+      }
+    ],
+    "productIds": [329]
+  },
+  {
+    "id": 83,
+    "type": "Alquiler",
+    "price": 786,
+    "advancePayment": 370,
+    "advancePaymentDate": "2023-09-25",
+    "deliveryDate": "2023-09-27",
+    "isProductDelivered": false,
+    "returnDate": "2023-09-28",
+    "isProductReturn": false,
+    "customer": {
+      "id": 90,
+      "identification": 1029161093,
+      "firstName": "Richard",
+      "lastName": "Joyce",
+      "email": "dorisevans@example.org",
+      "contact": "3019779439"
+    },
+    "customerId": 90,
+    "products": [
+      {
+        "id": 328,
+        "title": "state",
+        "reference": "P-912",
+        "categoryType": "Novias",
+        "categoryId": 72,
+        "hasSale": false,
+        "hasRental": true
+      }
+    ],
+    "productIds": [328]
+  }
+]

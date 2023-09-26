@@ -17,7 +17,7 @@ async function makeRequest(method, url, params = {}) {
 
   try {
     let response;
-
+    
     switch (method) {
       case "GET":
         response = await axios.get(url);

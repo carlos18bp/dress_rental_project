@@ -9,12 +9,13 @@
   
 <script setup>
   import { reactive } from "vue";
-  import Product from '@/models/customer';
+  import Product from '@/models/product';
   import ProductForm from "@/components/product/ProductForm.vue";
 
   const product = reactive( new Product({
     title: '',
     reference: '',
-    category: '',
+    categoryId: '',
+    categoryType: ''
   }));
 </script>

@@ -3,11 +3,11 @@
     <div class="d-flex justify-content-between">
       <h1>Lista de Facturas:</h1>
       <div>
-        <router-link  
+        <RouterLink  
           :to="{ name: 'create_invoice' }" 
-          class="btn btn-primary btn-lg">
+          class="btn btn-primary btn-lg test-list-invoice-link">
           Crear Factura
-        </router-link>
+        </RouterLink>
         <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>
         <button @click="report" class="btn btn-success btn-lg">Descargar Reporte</button>
       </div>

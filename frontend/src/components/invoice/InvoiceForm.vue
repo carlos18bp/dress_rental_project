@@ -3,16 +3,19 @@
     <h1>{{ defineAction }}</h1>
     
     <form @submit.prevent="onSubmit">
-      <div v-if="invoice && filterAvailableProducts()" class="mt-3">
+      <div v-if="invoiceformData && filterAvailableProducts()" class="mt-3">
         <div class="mb-3">
-          <label for="customer" class="form-label">Customer:</label>
+          <label for="customer" 
+            class="form-label test-customer-label">
+              Customer:
+          </label>
           <select
-            class="form-select"
-            v-model="invoice.customerId"
+            class="form-select test-customer-select"
+            v-model="invoiceformData.customerId"
             required>
             <option disabled>Seleccionar una opción</option>
             <option
-              v-for="customer in productStore.customers"
+              v-for="customer in customerStore.customers"
               :key="customer.id"
               :value="customer.id">
               {{ customer.firstName }} {{ customer.lastName }} ({{
@@ -23,23 +26,24 @@
         </div>
 
         <div class="mb-3">
-          <label for="product" class="form-label">
+          <label for="product" 
+            class="form-label test-product-label">
             Referencia del producto:
           </label>          
           <div>
             <div class="d-flex mt-2" 
-              v-for="(productId, index) in invoice.selectedProductIdsLength" :key="productId">
+              v-for="(productId, index) in invoiceformData.selectedProductIdsLength" :key="productId">
               <select
-                class="form-select"
-                v-model="invoice.productIds[index]"
+                class="form-select test-product-select"
+                v-model="invoiceformData.productIds[index]"
                 required>
                 <option disabled selected>Seleccionar una opción</option>
                 <option
                   v-for="product in filterAvailableProducts()"             
                   :key="product.id"
                   :value="product.id"
-                  :disabled="invoice.isProductSelected(product.id)">
-                  <p v-if="invoice.isProductSelected(product.id)">
+                  :disabled="invoiceformData.isProductSelected(product.id)">
+                  <p v-if="invoiceformData.isProductSelected(product.id)">
                     {{ product.reference }} (Seleccionado)
                   </p>
                   <p v-else>
@@ -48,25 +52,28 @@
                 </option>
               </select>            
               <button class="btn btn-danger" 
-                :disabled="invoice.isFirstProduct(index)" 
-                @click="invoice.removeProduct(index)">
+                :disabled="invoiceformData.isFirstProduct(index)" 
+                @click="invoiceformData.removeProduct(index)">
                   Eliminar ultimo producto
               </button>
             </div>
           </div>
           <div class="d-flex mt-2">
-            <button class="btn btn-secondary" @click="invoice.addFieldProduct">
+            <button class="btn btn-secondary" @click="invoiceformData.addFieldProduct">
                 Agregar otro producto
             </button>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="type" class="form-label">Venta / Alquiler:</label>
+          <label for="type" 
+            class="form-label test-sale-rental-label">
+            Venta / Alquiler:
+          </label>
           <select
-            class="form-select"
+            class="form-select test-sale-rental-select"
             aria-label="Default select example"
-            v-model="invoice.type"
+            v-model="invoiceformData.type"
             required
           >
             <option disabled>Seleccionar una opción</option>
@@ -76,96 +83,104 @@
         </div>
 
         <div class="mb-3">
-          <label for="price" class="form-label">
+          <label for="price" 
+            class="form-label test-price-label">
             Precio (Sin comas ni puntos):
           </label>
           <input
             type="number"
-            class="form-control"
+            class="form-control test-price-input"
             id="price"
             placeholder="Precio (Sin comas ni puntos)"
-            v-model="invoice.price"
+            v-model="invoiceformData.price"
             required
           />
         </div>
 
         <div class="mb-3">
-          <label for="advancePayment" class="form-label">
+          <label for="advancePayment" 
+            class="form-label test-advance-payment-label">
             Abono (Sin comas ni puntos):
           </label>
           <input
             type="number"
-            class="form-control"
+            class="form-control test-advance-payment-input"
             id="advancePayment"
             placeholder="Abono (Sin comas ni puntos)"
-            v-model="invoice.advancePayment"
+            v-model="invoiceformData.advancePayment"
             required
           />
         </div>
 
         <div class="mb-3">
-          <label for="advancePaymentDate" class="form-label">
+          <label for="advancePaymentDate" 
+            class="form-label test-advance-payment-date-label">
             Fecha de Abono:
           </label>
           <input
             type="date"
-            class="form-control"
+            class="form-control test-advance-payment-date-input"
             id="advancePaymentDate"
             placeholder="Fecha de Abono"
-            v-model="invoice.advancePaymentDate"
+            v-model="invoiceformData.advancePaymentDate"
             required
           />
         </div>
 
         <div class="mb-3">
-          <label for="isProductDelivered" class="form-label">
+          <label for="isProductDelivered" 
+            class="form-label test-is-product-delivered-label">
             El Producto fue Entregado al Cliente:
           </label>
           <select
-            class="form-control"
+            class="form-control test-is-product-delivered-select"
             id="isProductDelivered"
-            v-model="invoice.isProductDelivered">
+            v-model="invoiceformData.isProductDelivered">
             <option value="true">Si</option>
             <option value="false">No</option>
           </select>
         </div>
 
         <div class="mb-3">
-          <label for="deliveryDate" class="form-label">
+          <label for="deliveryDate" 
+            class="form-label test-delivery-date-label">
             Fecha Estimada de Entrega al Cliente:
           </label>
           <input
             type="date"
-            class="form-control"
+            class="form-control test-delivery-date-input"
             id="deliveryDate"
             placeholder="Fecha Estimada de Entrega al Cliente"
-            v-model="invoice.deliveryDate"
+            v-model="invoiceformData.deliveryDate"
             required
           />
         </div>
 
         <div v-if="isRental" class="mb-3">
-          <label for="returnDate" class="form-label">
+          <label for="returnDate" 
+            class="form-label test-return-date-label">
             Fecha Estimada de Devolución:
           </label>
           <input
             type="date"
-            class="form-control"
+            class="form-control test-return-date-input"
             id="returnDate"
             placeholder="Fecha Estimada de Devolución"
-            v-model="invoice.returnDate"
+            v-model="invoiceformData.returnDate"
             required
           />
         </div>
         
         <div class="mb-3">
-          <label for="is_return" class="form-label">
+          <label for="is_return" 
+            class="form-label test-is-product-return-label">
             El Producto fue Devuelto:
           </label>
           <select
-            class="form-control"
+            class="form-control test-is-product-return-select"
             id="is_return"
-            v-model="invoice.isProductReturn">
+            v-model="invoiceformData.isProductReturn"
+            required>
             <option value="true">Si</option>
             <option value="false">No</option>
           </select>
@@ -181,27 +196,27 @@
 </template>
 
 <script setup>
-  import { useRouter } from "vue-router";
-  import Invoice from '@/models/invoice';
   import { submitHandler } from "@/shared/submit_handler";
-  import { computed, ref, watchEffect } from "vue";
+  import { computed, onMounted, ref, watchEffect } from "vue";
+  import { useCustomerStore } from '@/stores/customer';
   import { useProductStore } from '@/stores/product';
 
-  const router = useRouter();
+  const customerStore = useCustomerStore();
   const productStore = useProductStore();
-  const invoice = ref(null);
 
   const props = defineProps({
     action: String,
     invoiceformData: Object,
     model: String,
   });
+
+  onMounted(async () => {
+    await customerStore.fetchCustomersData();
+    await productStore.fetchProductsData();
+  });
   
   watchEffect(() => {
-    if (props.invoiceformData && !invoice.value) {
-      invoice.value = new Invoice(props.invoiceformData);      
-    }
-    if (invoice.value) invoice.value.checkDates;
+    props.invoiceformData.checkDates;
   });
 
   /**
@@ -209,7 +224,7 @@
    * @return {array} - Available product array.
    */
    function filterAvailableProducts() {
-    return productStore.filterAvailableProductsByInvoice(invoice.value);
+    return productStore.filterAvailableProductsByInvoice(props.invoiceformData);
   }
 
   /**
@@ -226,7 +241,7 @@
    * @returns {boolean} - Check invoice type.
    */
   const isRental = computed(() => {
-    if (invoice.value.type === 'Alquiler') return true;
+    if (props.invoiceformData.type === 'Alquiler') return true;
     return false;
   });
 
@@ -238,12 +253,12 @@
       props.endPoint == "create_invoice/"
         ? "Se ha creado tu nueva venta"
         : "Se ha editado la venta";
+
     submitHandler(
       props.action,
-      invoice.value,
+      props.invoiceformData,
       props.model,
       text_response,
-      router,
       "/list_invoices"
     );
   };

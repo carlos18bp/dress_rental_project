@@ -1,22 +1,22 @@
 <template>
   <div class="container mt-5">
-    <h1>Detalle del Producto:</h1>
+    <h2>Detalle del Producto:</h2>
     <div v-if="detail.product" class="row mt-5">
-      <div class="col-6">
-        <h2>Titulo:</h2>
+      <div class="col-4 test-title">
+        <h3>Titulo:</h3>
         <p>{{ detail.product.title }}</p>
       </div>
-      <div class="col-6">
-        <h2>Referencia:</h2>
+      <div class="col-4 test-reference">
+        <h3>Referencia:</h3>
         <p>{{ detail.product.reference }}</p>
       </div>
-      <div class="col-6">
-        <h2>Categoria:</h2>
+      <div class="col-4 test-category-type">
+        <h3>Categoria:</h3>
         <p>{{ detail.product.categoryType }}</p>
       </div>
     </div>
     <div v-if="detail.product && detail.product.invoices.length">
-      <h2>Lista de Ventas/Alquileres:</h2>
+      <h3>Lista de Ventas/Alquileres:</h3>
       <InvoiceTable
         :invoices="detail.product.invoices"
       >

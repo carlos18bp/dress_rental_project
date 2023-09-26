@@ -3,9 +3,10 @@
     <div class="d-flex justify-content-between">
       <h1>Lista de Clientes:</h1>
       <div>
-        <router-link  :to="{ name: 'create_customer' }" class="btn btn-primary btn-lg m-3">
+        <RouterLink  :to="{ name: 'create_customer' }" 
+          class="btn btn-primary btn-lg m-3 test-list-customer-link">
           Crear Cliente
-        </router-link>
+        </RouterLink>
         <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>
         <button @click="report" class="btn btn-success btn-lg">Descargar Reporte</button>
     </div>

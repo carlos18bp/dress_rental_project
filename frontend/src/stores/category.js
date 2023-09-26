@@ -19,15 +19,17 @@ export const useCategoryStore = defineStore("category", {
     async fetchCategoriesData() {
       if(this.areUpdateCategories) return;
 
-      const jsonData = await get_request("api/list_categories/");
-      if (jsonData) {
-        this.categories = JSON.parse(jsonData).map((item) => {
-          return {
-            id: item.pk,
-            type: item.fields.type,
-          };
-        });
+      let jsonData = await get_request("api/list_categories/");
+      if (jsonData && typeof jsonData === 'string') {
+        jsonData = JSON.parse(jsonData)
       }
+      this.categories = jsonData.map((item) => {
+        return {
+          id: item.pk,
+          type: item.fields.type,
+        };
+      });      
+
       this.areUpdateCategories = true;
     },
   }

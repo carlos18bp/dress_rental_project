@@ -12,7 +12,7 @@ class Customer {
     this.lastName = params.lastName;
     this.email = params.email;
     this.contact = params.contact;
-    this.secondContact = params.contact;
+    this.secondContact = params.secondContact;
     this.address = params.address;
   }
 }

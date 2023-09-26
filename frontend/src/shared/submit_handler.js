@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import router from '@/router';
 import { useDressRentalStore } from '@/stores/dress_rental';
 
 /**
@@ -7,7 +8,6 @@ import { useDressRentalStore } from '@/stores/dress_rental';
  * @param {object} formData - form data to create or edit a record.
  * @param {string} model - Model record.
  * @param {string} text_response - text success message.
- * @param {object} router - Router utility.
  * @param {string} redirectUrl - Redirect endpoint.
  */
 export function submitHandler(
@@ -15,11 +15,10 @@ export function submitHandler(
   formData,
   model,
   text_response,
-  router,
   redirectUrl
 ) {
   const store = useDressRentalStore();
-
+  
   try {
     action == "create"
       ? store.createRequest(formData, model)

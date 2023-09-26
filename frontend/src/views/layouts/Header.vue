@@ -1,7 +1,7 @@
 <template>
-  <NavbarComponent></NavbarComponent>
+  <Navbar></Navbar>
 </template>
 
 <script setup>
-  import NavbarComponent from "@/components/NavbarComponent.vue";
+  import Navbar from "@/components/Navbar.vue";
 </script>

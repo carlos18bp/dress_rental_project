@@ -4,21 +4,27 @@
     <form @submit.prevent="onSubmit">
       <div v-if="customerformData" class="mt-3">
         <div class="mb-3">
-          <label for="identification" class="form-label">Número de Cédula:</label>
+          <label for="identification" 
+            class="form-label test-identification-label">
+            Número de Cédula:
+          </label>
           <input
             type="number"
-            class="form-control"
+            class="form-control test-identification-input"
             id="identificatio"
             placeholder="Número de Cédula"
-            v-model="customerformData.identification" 
+            v-model="customerformData.identification"
             required
           />
         </div>
         <div class="mb-3">
-          <label for="firstName" class="form-label">Nombre:</label>
+          <label for="firstName" 
+            class="form-label test-first-name-label">
+            Nombre:
+          </label>
           <input
             type="text"
-            class="form-control"
+            class="form-control test-first-name-input"
             id="firstName"
             placeholder="Nombre"
             v-model="customerformData.firstName" 
@@ -26,10 +32,13 @@
           />
         </div>
         <div class="mb-3">
-          <label for="lastName" class="form-label">Apellido:</label>
+          <label for="lastName" 
+            class="form-label test-last-name-label">
+            Apellido:
+          </label>
           <input
             type="text"
-            class="form-control"
+            class="form-control test-last-name-input"
             id="lastName"
             placeholder="Apellido"
             v-model="customerformData.lastName" 
@@ -37,20 +46,26 @@
           />
         </div>
         <div class="mb-3">
-          <label for="customerEmail" class="form-label">Email:</label>
+          <label for="customerEmail" 
+            class="form-label test-email-label">
+            Email:
+          </label>
           <input
             type="email"
-            class="form-control"
+            class="form-control test-email-input"
             id="customer-email"
             placeholder="Email"
             v-model="customerformData.email"
           />
         </div>
         <div class="mb-3">
-          <label for="customerContact" class="form-label">Número De Contacto:</label>
+          <label for="customerContact" 
+            class="form-label test-contact-label">
+            Número De Contacto:
+          </label>
           <input
             type="number"
-            class="form-control"
+            class="form-control test-contact-input"
             id="customerContact"
             placeholder="Número De Contacto"
             v-model="customerformData.contact" 
@@ -58,20 +73,26 @@
           />
         </div>
         <div class="mb-3">
-          <label for="customerSecondContact" class="form-label">Número De Contacto Secundario (opcional):</label>
+          <label for="customerSecondContact" 
+            class="form-label test-second-contact-label">
+            Número De Contacto Secundario (opcional):
+          </label>
           <input
             type="number"
-            class="form-control"
+            class="form-control test-second-contact-input"
             id="customerSecondContact"
             placeholder="Número De Contacto Secundario (opcional)"
             v-model="customerformData.secondContact" 
           />
         </div>
         <div class="mb-3">
-          <label for="customerAddress" class="form-label">Direccion (opcional):</label>
+          <label for="customerAddress" 
+            class="form-label test-address-label">
+            Direccion (opcional):
+          </label>
           <input
             type="text"
-            class="form-control"
+            class="form-control test-address-input"
             id="customerAddress"
             placeholder="Direccion (opcional)"
             v-model="customerformData.address" 
@@ -87,11 +108,8 @@
 </template>
 
 <script setup>
-  import { useRouter } from 'vue-router';
-  import { submitHandler } from '@/shared/submit_handler'; 
   import { computed } from 'vue';
-
-  const router = useRouter();
+  import { submitHandler } from '@/shared/submit_handler'; 
 
   const props = defineProps({
       action: String,
@@ -118,8 +136,7 @@
       props.action, 
       props.customerformData, 
       props.model, 
-      text_response,                   
-      router, 
+      text_response,
       '/list_customers');
   };
 

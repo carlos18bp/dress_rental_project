@@ -4,10 +4,13 @@
     <form @submit.prevent="onSubmit">
       <div v-if="productformData" class="mt-3">
         <div class="mb-3">
-          <label for="title" class="form-label">Titulo:</label>
+          <label for="title" 
+            class="form-label test-title-label">
+            Titulo:
+          </label>
           <input
             type="text"
-            class="form-control"
+            class="form-control test-title-input"
             id="title"
             placeholder="Titulo del producto"
             v-model="productformData.title"
@@ -15,10 +18,13 @@
           />
         </div>
         <div class="mb-3">
-          <label for="reference" class="form-label">Referencia:</label>
+          <label for="reference" 
+            class="form-label test-reference-label">
+            Referencia:
+          </label>
           <input
             type="text"
-            class="form-control"
+            class="form-control test-reference-input"
             id="reference"
             placeholder="Referencia"
             v-model="productformData.reference"
@@ -26,9 +32,12 @@
           />
         </div>
         <div class="mb-3">
-          <label for="category" class="form-label">Categoria:</label>
+          <label for="category" 
+            class="form-label test-category-label">
+            Categoria:
+          </label>
           <select
-            class="form-select"
+            class="form-select test-category-select"
             v-model="productformData.categoryId"
             required>
             <option disabled>Seleccionar una opción</option>
@@ -51,7 +60,7 @@
   
 <script setup>
   import { computed } from "vue";
-  import { useRouter } from "vue-router";
+  import { onMounted } from 'vue';
   import { submitHandler } from "@/shared/submit_handler";
   import { useCategoryStore } from '@/stores/category';
  
@@ -61,8 +70,9 @@
     model: String,
   });
 
-  const router = useRouter();
   const categoryStore = useCategoryStore();
+
+  onMounted(async () => await categoryStore.fetchCategoriesData());
 
   /**
    * Check action to define view title.
@@ -84,8 +94,7 @@
       props.action,
       props.productformData,
       props.model,
-      text_response,      
-      router,
+      text_response,
       "/list_products"
     );
   };

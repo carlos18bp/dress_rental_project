@@ -4,12 +4,12 @@
       <div class="container-fluid">
         <a class="navbar-brand">
           <img
-            src="../assets/Logo/logo.png"
-            style="height: 150px"
+            :src="Logo" 
+            class="logo-height"
           />
           <img
-            src="../assets/Logo/only_text.png"
-            style="height: 100px"
+            :src="TextLogo" 
+            class="text-logo-height"
           />
         </a>
         <button
@@ -30,28 +30,32 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link fs-3">
-                <RouterLink :to="{ name: 'home' }" class="custom-link">
+                <RouterLink :to="{ name: 'home' }" 
+                  class="custom-link test-home-link">
                   Home
                 </RouterLink>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link fs-3">
-                <RouterLink :to="{ name: 'list_customers' }" class="custom-link">
+                <RouterLink :to="{ name: 'list_customers' }" 
+                  class="custom-link test-list-customer-link">
                   Clientes
                 </RouterLink>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link fs-3">
-                <RouterLink :to="{ name: 'list_products' }" class="custom-link">
+                <RouterLink :to="{ name: 'list_products' }" 
+                  class="custom-link test-list-product-link">
                   Productos
                 </RouterLink>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link fs-3">
-                <RouterLink :to="{ name: 'list_invoices' }" class="custom-link">
+                <RouterLink :to="{ name: 'list_invoices' }" 
+                  class="custom-link test-list-invoice-link">
                   Facturas
                 </RouterLink>
               </a>
@@ -65,6 +69,8 @@
 
 <script setup>
   import { RouterLink } from "vue-router";
+  import Logo from "@/assets/logo/logo.png"
+  import TextLogo from "@/assets/logo/only_text.png"
 </script>
 
 <style scoped>
@@ -74,5 +80,11 @@
   }
   .custom-link:hover {
     color: #0b5ed7;
+  }
+  .logo-height {
+    height: 150px
+  }
+  .text-logo-height {
+    height: 100px
   }
 </style>

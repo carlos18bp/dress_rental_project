@@ -15,29 +15,25 @@ export const useDressRentalStore = defineStore("dress_rental", {
      * @return {Array} - category array
      */
     getCategories() {
-      const categoryStore = useCategoryStore();
-      return categoryStore;
+      return useCategoryStore();
     },
     /**
      * @return {Array} - customer array
      */
     getCustomers() {
-      const customerStore = useCustomerStore();
-      return customerStore;
+      return useCustomerStore();
     },
     /**
      * @return {Array} - invoice array
      */
     getInvoices() {
-      const invoiceStore = useInvoiceStore();
-      return invoiceStore;
+      return useInvoiceStore();
     },
     /**
      * @return {Array} - product array
      */
     getProducts() {
-      const productStore = useProductStore();
-      return productStore;
+      return useProductStore();
     },
   },
   actions: {

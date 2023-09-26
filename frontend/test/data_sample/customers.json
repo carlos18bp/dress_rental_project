@@ -1,0 +1,78 @@
+[
+  {
+    "id": 90,
+    "identification": 1029161093,
+    "firstName": "Richard",
+    "lastName": "Joyce",
+    "email": "dorisevans@example.org",
+    "contact": "3019779439",
+    "secondContact": "3017459985",
+    "address": "54686 Frederick Rapid Apt. 603",
+    "invoices": [
+      {
+        "id": 83,
+        "type": "Alquiler",
+        "price": 786,
+        "advancePayment": 370,
+        "advancePaymentDate": "2023-09-25",
+        "isProductDelivered": false,
+        "deliveryDate": "2023-09-27",
+        "returnDate": "2023-09-28",
+        "isProductReturn": false,
+        "products": [
+          {
+            "id": 328,
+            "title": "state",
+            "reference": "P-912",
+            "categoryType": "Novias",
+            "categoryId": 72,
+            "hasSale": false,
+            "hasRental": true
+          }
+        ],
+        "productIds": [328],
+        "customerId": 90
+      }
+    ],
+    "hasSale": false,
+    "hasRental": true
+  },
+  {
+    "id": 89,
+    "identification": 1023468725,
+    "firstName": "Michael",
+    "lastName": "Smith",
+    "email": "danapatton@example.net",
+    "contact": "3019601679",
+    "secondContact": "3007407329",
+    "address": "69127 Reed Courts Apt. 552",
+    "invoices": [
+      {
+        "id": 84,
+        "type": "Venta",
+        "price": 916,
+        "advancePayment": 784,
+        "advancePaymentDate": "2023-10-07",
+        "isProductDelivered": false,
+        "deliveryDate": "2023-09-25",
+        "returnDate": "",
+        "isProductReturn": false,
+        "products": [
+          {
+            "id": 329,
+            "title": "spring",
+            "reference": "P-864",
+            "categoryType": "Primera comunión",
+            "categoryId": 73,
+            "hasSale": true,
+            "hasRental": false
+          }
+        ],
+        "productIds": [329],
+        "customerId": 89
+      }
+    ],
+    "hasSale": true,
+    "hasRental": false
+  }
+]

@@ -73,8 +73,12 @@ export const useInvoiceStore = defineStore("invoice", {
     async fetchInvoicesData() {
       if(this.areUpdateInvoices) return;
 
-      const jsonData = await get_request("api/list_invoices/");
-      this.invoices =  JSON.parse(jsonData) ?? [];
+      let jsonData = await get_request("api/list_invoices/");
+      if (jsonData && typeof jsonData === 'string') {
+        jsonData = JSON.parse(jsonData)
+      }
+      this.invoices =  jsonData ?? [];
+
       this.areUpdateInvoices = true;
     },
     /**

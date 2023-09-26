@@ -5,7 +5,7 @@
       <div>
         <RouterLink 
           :to="{ name: 'create_product' }" 
-          class="btn btn-primary btn-lg">
+          class="btn btn-primary btn-lg test-list-product-link">
           Crear Producto
         </RouterLink>
         <button @click="cleanFilters" class="btn btn-secondary btn-lg m-3">Borrar Filtros</button>

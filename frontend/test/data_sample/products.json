@@ -1,0 +1,114 @@
+[
+  {
+    "id": 328,
+    "title": "state",
+    "reference": "P-912",
+    "categoryType": "Novias",
+    "categoryId": 6,
+    "invoices": [
+      {
+        "id": 83,
+        "type": "Alquiler",
+        "price": 786,
+        "advancePayment": 370,
+        "advancePaymentDate": "2023-09-25",
+        "isProductDelivered": false,
+        "deliveryDate": "2023-09-27",
+        "returnDate": "2023-09-28",
+        "isProductReturn": false,
+        "customer": {
+          "id": 90,
+          "identification": 1029161093
+        }
+      }
+    ],
+    "hasSale": false,
+    "hasRental": true
+  },
+  {
+    "id": 322,
+    "title": "grow",
+    "reference": "P-851",
+    "categoryType": "Primera comunión",
+    "categoryId": 1,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 323,
+    "title": "ahead",
+    "reference": "P-214",
+    "categoryType": "Accesorios",
+    "categoryId": 2,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 324,
+    "title": "institution",
+    "reference": "P-520",
+    "categoryType": "Hombre",
+    "categoryId": 3,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 325,
+    "title": "paper",
+    "reference": "P-825",
+    "categoryType": "Novias",
+    "categoryId": 4,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 326,
+    "title": "animal",
+    "reference": "P-854",
+    "categoryType": "Niña",
+    "categoryId": 5,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 327,
+    "title": "someone",
+    "reference": "P-428",
+    "categoryType": "Primera comunión",
+    "categoryId": 6,
+    "invoices": [],
+    "hasSale": false,
+    "hasRental": false
+  },
+  {
+    "id": 329,
+    "title": "spring",
+    "reference": "P-864",
+    "categoryType": "Primera comunión",
+    "categoryId": 7,
+    "invoices": [
+      {
+        "id": 84,
+        "type": "Venta",
+        "price": 916,
+        "advancePayment": 784,
+        "advancePaymentDate": "2023-10-07",
+        "isProductDelivered": false,
+        "deliveryDate": "2023-09-25",
+        "returnDate": "",
+        "isProductReturn": false,
+        "customer": {
+          "id": 89,
+          "identification": 1023468725
+        }
+      }
+    ],
+    "hasSale": true,
+    "hasRental": false
+  }
+]

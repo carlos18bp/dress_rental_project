@@ -33,7 +33,7 @@ export const useProductStore = defineStore("product", {
         invoice.productIds.includes(product.id));
     },
     /**
-     * Filter by invoice products
+     * Filter by sale products
      * @param {object} state - State. 
      * @returns {array} - Invoice products occurrences.
      */
@@ -62,8 +62,12 @@ export const useProductStore = defineStore("product", {
     async fetchProductsData() {
       if(this.areUpdateProducts) return;
 
-      const jsonData = await get_request("api/list_products/");
-      this.products = JSON.parse(jsonData) ?? [];
+      let jsonData = await get_request('api/list_products/');
+      if (jsonData && typeof jsonData === 'string') {
+        jsonData = JSON.parse(jsonData)
+      }
+      this.products = jsonData ?? [];
+      
       this.areUpdateProducts = true;
     },
   }

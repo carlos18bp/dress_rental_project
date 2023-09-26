@@ -24,8 +24,8 @@ export const useCustomerStore = defineStore("customer", {
      */
     filterByFirstOrLastName: (state) => (query) => {
       return state.customers.filter(customer => {
-        return customer.firstName.toLowerCase().includes(query) || 
-               customer.lastName.toLowerCase().includes(query);
+        return customer.firstName.toLowerCase().includes(query.toLowerCase()) || 
+               customer.lastName.toLowerCase().includes(query.toLowerCase());
       });
     },
   },
@@ -41,8 +41,13 @@ export const useCustomerStore = defineStore("customer", {
      */
     async fetchCustomersData() {
       if(this.areUpdateCustomers) return;
-      const jsonData = await get_request("api/list_customers/");
-      this.customers = JSON.parse(jsonData) ?? [];
+
+      let jsonData = await get_request("api/list_customers/");
+      if (jsonData && typeof jsonData === 'string') {
+        jsonData = JSON.parse(jsonData)
+      }
+      this.customers = jsonData ?? [];
+      
       this.areUpdateCustomers = true;
     },
   }

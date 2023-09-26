@@ -30,7 +30,7 @@ class Invoice {
    * @returns {integer} - Get length of selected products.
    */
   get selectedProductIdsLength() {
-    return this.productIds.length ? this.productIds.length : 1;
+    return this.productIds.length || 1;
   }
 
   /**

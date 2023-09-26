@@ -1,0 +1,58 @@
+  [
+    {
+      "model": "dress_rental.category",
+      "pk": 1,
+      "fields": {
+        "type": "Hombre"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 2,
+      "fields": {
+        "type": "Mujer"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 3,
+      "fields": {
+        "type": "Niño"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 4,
+      "fields": {
+        "type": "Niña"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 5,
+      "fields": {
+        "type": "Novias"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 6,
+      "fields": {
+        "type": "Primera comunión"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 7,
+      "fields": {
+        "type": "15 años"
+      }
+    },
+    {
+      "model": "dress_rental.category",
+      "pk": 8,
+      "fields": {
+        "type": "Accesorios"
+      }
+    }
+  ]
