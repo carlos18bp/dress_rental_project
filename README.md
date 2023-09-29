@@ -1,5 +1,10 @@
 ## Description
-This solution manages the rental and sale of dresses.
+This solution manages rental and sales for an event dress rental business.
+This prototype manages, monitors and reports important data for the business, such as customers, products, sales and invoices.
+
+More than a solution, this repository seeks to show my skills using python and django from the backend and javascript and vue from the frontend.
+
+As part of the solution I documented, I added coverage of unit and integration tests on the backend and frontend side, design patterns, easy-to-maintain and readable code, always thinking that the solution is a quality product following good software development practices.
 
 ## Development tools used
 * Python 3
@@ -8,6 +13,7 @@ This solution manages the rental and sale of dresses.
     * Axios
     * Router
     * Pinia
+    * Jest
 * Vite 4
 * Bootstrap 5
 
@@ -26,19 +32,6 @@ sudo apt install python3
 ```sh
 pip install -r requirements.txt
 ```
-
-## Generate fake data:
-
-```sh
-python3 manage.py create_fake_data [numbers_of_records]
-```
-
-## To delete fake data:
-
-```sh
-python3 manage.py delete_fake_data
-```
-
 ## Run migrations:
 
 ```sh
@@ -46,10 +39,28 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
+## Generate fake data via console (you can also use the user interface where you will find options for creating data defined by default.):
+
+```sh
+python3 manage.py create_fake_data [numbers_of_records]
+```
+
+## To delete fake data via console:
+
+```sh
+python3 manage.py delete_fake_data
+```
+
 ## Run server:
 
 ```sh
 python3 manage.py runserver
+```
+
+## Run test from Django app:
+
+```sh
+python3 manage.py test
 ```
 
 ## Set enviroment to Vue 3 and Vite app
@@ -71,5 +82,11 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+## Run test from Vue app:
+
+```sh
+npm run test
 ```
 
