@@ -32,7 +32,7 @@
               <a class="nav-link fs-3">
                 <RouterLink :to="{ name: 'home' }" 
                   class="custom-link test-home-link">
-                  Home
+                  Home >
                 </RouterLink>
               </a>
             </li>

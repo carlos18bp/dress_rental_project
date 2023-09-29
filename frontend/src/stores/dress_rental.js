@@ -83,5 +83,15 @@ export const useDressRentalStore = defineStore("dress_rental", {
           throw new Error(`Unsupported model: ${updateModel}`);
       }
     },
+    /**
+     * Create new data test.
+     * @param {integer} numberDataTest - number data test.
+     */
+      async createNewDataTest(numberDataTest) {
+        await create_request(`/api/create_new_data_test/${numberDataTest}/`);
+        this.getCustomers.areUpdateCustomers = false;
+        this.getInvoices.areUpdateInvoices = false;
+        this.getProducts.areUpdateProducts = false;
+      },
   },
 });
